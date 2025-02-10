@@ -7,7 +7,7 @@ export default (pool: Pool): Router => {
 
     // Adiciona uma rota para a URL raiz
     router.get('/', (req: Request, res: Response) => {
-        res.send('Bem-vindo à aplicação de blogging!');
+        res.send('Bem-vindo à aplicação de blogging de Andreia e Leandro!');
     });
 
     router.get('/posts', getPosts(pool));
