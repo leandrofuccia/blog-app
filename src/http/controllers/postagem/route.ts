@@ -9,26 +9,26 @@ import { findPostagem } from "./find-postagem"
 
 
 export async function postagemRoutes(app: FastifyInstance) {
-  console.log('Registrando rota /postagem')  
-  app.post('/postagem', create)
+  console.log('Registrando rota /posts')  
+  app.post('/posts', create)
   
-  console.log('Registrando rota /postagem/usuario/:usuarioId')
-  app.get('/postagem/usuario/:usuarioId', findPostagemByUsuarioId)
+  console.log('Registrando rota /posts/usuario/:usuarioId')
+  app.get('/posts/usuario/:usuarioId', findPostagemByUsuarioId)
   
-  console.log('Registrando rota /postagem update')  
-  app.put('/postagem/:id', update)
+  console.log('Registrando rota /posts update')  
+  app.put('/posts/:id', update)
 
-  console.log('Registrando rota /postagem delete')  
-  app.delete ('/postagem/:id', deletePostagem)
+  console.log('Registrando rota /posts delete')  
+  app.delete ('/posts/:id', deletePostagem)
 
-  console.log('Registrando rota /postagem/id')  
-  app.get ('/postagem/:id', findPostagemById)
+  console.log('Registrando rota /posts/id')  
+  app.get ('/posts/:id', findPostagemById)
 
-  console.log('Registrando rota /postagem/search')  
-  app.get ('/postagem/search/:termo', findPostagemBySearch)
+  console.log('Registrando rota /posts/search')  
+  app.get ('/posts/search/:termo', findPostagemBySearch)
 
-  console.log('Registrando rota /postagem')  
-  app.get ('/postagem', findPostagem)
+  console.log('Registrando rota /posts')  
+  app.get ('/posts', findPostagem)
 
 
 }

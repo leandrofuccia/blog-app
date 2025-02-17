@@ -9,10 +9,10 @@ import { postagemRoutes } from './http/controllers/postagem/route'
 export const app = fastify()
 
 console.log('Registrando rota 1 /usuario') 
-app.register(usuarioRoutes, { prefix: '/api' }) // Prefixo opcional
+app.register(usuarioRoutes) // Prefixo opcional
 
 console.log('Registrando rota 2 /postagem') 
-app.register(postagemRoutes, {prefix: '/api' })
+app.register(postagemRoutes)
 
 app.setErrorHandler(globalErrorHandler)
 
