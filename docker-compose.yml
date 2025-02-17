@@ -2,13 +2,14 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - "3002:3002"
     environment:
-      - DB_HOST=db
-      - DB_USER=postgres
-      - DB_PASSWORD=your_db_password
-      - DB_NAME=blogdb
-      - DB_PORT=5432
+      - DATABASE_USER=your_db_user
+      - DATABASE_HOST=localhost
+      - DATABASE_NAME=blogdb
+      - DATABASE_PASSWORD=your_db_password
+      - DATABASE_PORT=5432
+      - JWT_SECRET=sua_chave_secreta
     depends_on:
       - db
 
