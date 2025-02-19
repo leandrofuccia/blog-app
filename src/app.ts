@@ -1,4 +1,6 @@
 
+import "reflect-metadata"
+import '@/lib/typeorm/typeorm'
 import fastify from 'fastify'
 import { usuarioRoutes } from './http/controllers/usuario/route' // Caminho relativo ao arquivo atual
 import { globalErrorHandler } from './utils/global-error-handler'

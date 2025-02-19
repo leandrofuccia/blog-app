@@ -1,3 +1,5 @@
+import { IPostagem } from "./postagem.interface"
+
 export interface IUsuario {
     id?: number
     nome: string
@@ -6,4 +8,5 @@ export interface IUsuario {
     perfilid: number
     datacriacao?: Date
     ultimologin?: Date
+    postagem?: IPostagem    
 }

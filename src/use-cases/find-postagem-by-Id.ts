@@ -1,14 +1,15 @@
-import { IPostagem } from "@/entities/models/postagem.interface";
 import { IPostagemRepository } from "@/repositories/postagem.repository.interface";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
+
 
 export class FindPostagemByIdUseCase{
     constructor(private postagemRepository: IPostagemRepository){}
 
-    async handler(
-        id: number,
-        page: number,
-        limit: number,
-    ): Promise<(IPostagem)[]> {
-        return this.postagemRepository.findPostagemById(id, page, limit)
+    async handler (id: number){
+        const postagem = await this.postagemRepository.findPostagemById(id)
+
+        if (!postagem) throw new ResourceNotFoundError()
+
+        return postagem    
     }
 }

@@ -15,8 +15,8 @@ export async function deletePostagem(
 
     const deletePostagemUseCase = makeDeletePostagemUseCase()
 
-    const linha = await deletePostagemUseCase.handler(id)  
+    await deletePostagemUseCase.handler(id)  
     
-    return reply.status(200).send(linha)
+    return reply.status(204).send()
     
 }

@@ -1,5 +1,6 @@
 import { IPostagem } from "@/entities/models/postagem.interface";
 import { IUsuario } from "@/entities/models/usuario.interface";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { IPostagemRepository } from "@/repositories/postagem.repository.interface";
 
 export class FindPostagemByUsuarioUseCase{
@@ -10,6 +11,11 @@ export class FindPostagemByUsuarioUseCase{
         page: number,
         limit: number,
     ): Promise<(IPostagem & IUsuario)[]> {
-        return this.postagemRepository.findPostagemByUsuarioId(usuarioId, page, limit)
+        const postagem =  await this.postagemRepository.findPostagemByUsuarioId(usuarioId, page, limit)
+        if (!postagem || (postagem).length === 0) {
+                throw new ResourceNotFoundError();
+              }
+          
+        return postagem;
     }
 }

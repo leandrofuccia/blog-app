@@ -1,4 +1,5 @@
-import { PostagemRepository } from "@/repositories/pg/postagem.repository"
+
+import { PostagemRepository } from "@/lib/typeorm/postagem.repository"
 import { UpdatePostagemUseCase } from "../update-postagem"
 
 export function makeUpdatePostagemUseCase(){

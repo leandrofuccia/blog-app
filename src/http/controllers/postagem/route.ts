@@ -1,11 +1,12 @@
 import { FastifyInstance } from "fastify"
 import { create } from './create'
-import { update } from "./update"
+
 import { deletePostagem } from "./delete"
 import { findPostagemById } from "./find-postagem-By-Id"
 import { findPostagemBySearch } from "./find-postagem-By-Search"
 import { findPostagemByUsuarioId } from "./find-postagem-By-UsarioId"
 import { findPostagem } from "./find-postagem"
+import { update } from "./update"
 
 
 export async function postagemRoutes(app: FastifyInstance) {

@@ -1,4 +1,5 @@
-import { PostagemRepository } from "@/repositories/pg/postagem.repository"
+
+import { PostagemRepository } from "@/lib/typeorm/postagem.repository"
 import { deletePostagemUseCase } from "../delete-postagem"
 
 export function makeDeletePostagemUseCase(){

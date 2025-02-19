@@ -1,6 +1,6 @@
 import { makeUpdatePostagemUseCase } from "@/use-cases/factory/make-update-postagem-use-case";
 import { FastifyReply, FastifyRequest } from "fastify"
-import { z } from "zod"
+import { number, z } from "zod"
 
 export async function update(request: FastifyRequest, reply: FastifyReply) {
     console.log('registrerBodySchema');
@@ -29,7 +29,6 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
     )
     
     reply.code(200).send(postagem)
-
-    //return reply.status(200).send({ id: postagem?.id, titulo: postagem?.titulo,  conteudo: postagem?.conteudo, datacriacao: postagem?.datacriacao, dataatualizacao: postagem?.dataatualizacao})
+    
 
 }
