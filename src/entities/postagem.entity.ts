@@ -60,8 +60,8 @@ export class Postagem implements IPostagem {
   }
   */
 
-  import { IPostagem } from "./models/postagem.interface";
-import { Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { IPostagem } from "./models/postagem.interface";
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./usuario.entity";
 import { IUsuario } from "./models/usuario.interface";
 
@@ -86,7 +86,7 @@ export class Postagem implements IPostagem {
     type: 'varchar',
   })
   conteudo: string;
-
+ 
   @Column({
     name: 'usuarioid',
     type: 'int4',
@@ -111,7 +111,10 @@ export class Postagem implements IPostagem {
     cascade: true,
   })*/
 
-  @ManyToOne(() => Usuario, usuario => usuario.postagens)
+  /*@ManyToOne(() => Usuario, usuario => usuario.postagens)*/
+  @ManyToOne(() => Usuario, usuario => usuario.postagens, { nullable: false })
+  @JoinColumn({ name: 'usuarioid' })  // Usar @JoinColumn para especificar a coluna de junção
+  
   usuario: Usuario;  
 
   

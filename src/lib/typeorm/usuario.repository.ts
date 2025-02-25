@@ -3,6 +3,7 @@ import { Usuario } from "@/entities/usuario.entity";
 import { IUsuarioRepository } from "@/repositories/usuario.repository.interface";
 import { Repository } from "typeorm";
 import { appDataSource } from "./typeorm";
+import { ICredencial } from "@/entities/models/credencial.interface";
 
 export class UsuarioRepository implements IUsuarioRepository{
 
@@ -15,6 +16,37 @@ export class UsuarioRepository implements IUsuarioRepository{
     create(usuario: IUsuario): Promise<IUsuario | undefined> {
         return this.repository.save(usuario)
     }
+
+    findByUsername(nome: string) : Promise<IUsuario>{
+        return this.repository.findOne({          
+                  where: { nome },
+        }) as Promise<IUsuario>;
+
+    }
+
+    async findUsuarioByCredencialId(
+        credencialId: number                    
+    ): Promise<(IUsuario & ICredencial)[]> {
+        console.log('Entrou na função findUsuarioByCredencialId');
+                        
+        const queryBuilder = this.repository.createQueryBuilder("usuario")
+            .leftJoinAndSelect("usuario.credencial", "credencial") // Certifique-se de que o relacionamento está definido corretamente na entidade
+            .where("usuario.credencialid = :credencialId", { credencialId });
+                          
+        const usuarios = await queryBuilder.getMany();
+                   
+        return usuarios.map(usuario => {
+            return {
+                ...usuario,
+                credencial: {
+                    id: usuario.credencial?.id,
+                    username: usuario.credencial?.username,
+                    password: usuario.credencial?.password,
+                }
+            } as unknown as IUsuario & ICredencial;
+        });
+    }
+
 
 
 }

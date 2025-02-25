@@ -1,6 +1,7 @@
 import { IUsuario } from "./models/usuario.interface"
-import {Column, Entity, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import {Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Postagem } from "./postagem.entity"
+import { Credencial } from "./credencial.entity"
 
 @Entity({
   name: 'usuario',
@@ -17,19 +18,7 @@ export class Usuario implements IUsuario {
       type: 'varchar'
     })
     nome: string
-
-    @Column({
-      name: 'email',
-      type: 'varchar'
-    })
-    email: string
     
-    @Column({
-      name: 'senha',
-      type: 'varchar'
-    })
-    senha?: string
-
     @Column({
       name: 'perfilid',
       type: 'int4'
@@ -50,7 +39,17 @@ export class Usuario implements IUsuario {
     })
     ultimologin?: Date
 
+    @Column({
+      name: 'credencialid',
+      type: 'int4'
+    })
+    credencialId?: number
+
     @OneToMany(() => Postagem, postagem => postagem.usuarioid)
+
+    @OneToOne(() => Credencial, credencial => credencial.usuario)
+    @JoinColumn({ name: 'credencialid' })  // Usar @JoinColumn para especificar a coluna de junção
+    credencial?: Credencial;
 
     @JoinTable({
       name: 'postagem',
@@ -66,9 +65,8 @@ export class Usuario implements IUsuario {
     postagens?: Postagem[];
 
    
-    constructor(nome: string, email:string, perfilid: number) {
+    constructor(nome: string, perfilid: number) {
       this.nome = nome
-      this.email = email
       this.perfilid = perfilid
     }
   }
