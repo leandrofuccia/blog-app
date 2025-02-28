@@ -7,12 +7,12 @@ import { Postagem } from "@/entities/postagem.entity";
 import { Credencial } from "@/entities/credencial.entity";
 
 export const appDataSource = new DataSource({
-    type: 'postgres',
+    type: env.NODE_ENV === "test" ? "sqlite" : "postgres",
     host: env.DATABASE_HOST,
     port: env.DATABASE_PORT,
     username: env.DATABASE_USER,
     password: env.DATABASE_PASSWORD,
-    database: env.DATABASE_NAME,
+    database: env.NODE_ENV === "test" ? ":memory:" : env.DATABASE_NAME,
     entities: [Usuario, Postagem, Credencial],
     logging: env.NODE_ENV === 'development',
 })

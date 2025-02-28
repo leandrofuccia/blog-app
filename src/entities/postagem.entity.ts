@@ -63,7 +63,6 @@ export class Postagem implements IPostagem {
 import { IPostagem } from "./models/postagem.interface";
 import { Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./usuario.entity";
-import { IUsuario } from "./models/usuario.interface";
 
 @Entity({
   name: 'postagem',
@@ -89,21 +88,22 @@ export class Postagem implements IPostagem {
  
   @Column({
     name: 'usuarioid',
-    type: 'int4',
+    type: 'int',
   })
   usuarioid: number;
 
-  @Column({
+  @Column({ 
     name: 'datacriacao',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
+    type: process.env.NODE_ENV === "test" ? "text" : "timestamp", 
+    default: () => process.env.NODE_ENV === "test" ? "CURRENT_TIMESTAMP" : "'now()'"
   })
-  datacriacao?: Date;
+  datacriacao: Date;
+
 
   @Column({
     name: 'dataatualizacao',
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
+    type: process.env.NODE_ENV === "test" ? "text" : "timestamp",
+    default: () => process.env.NODE_ENV === "test" ? "CURRENT_TIMESTAMP" : "'now()'"
   })
   dataatualizacao?: Date;
 

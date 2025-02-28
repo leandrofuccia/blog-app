@@ -9,23 +9,13 @@ export async function findPostagemById(
     const registreParamSchema = z.object({
         id: z.coerce.number()
     })
-
-    const registrerQuerySchema = z.object({
-        page: z.coerce.number(),
-        limit: z.coerce.number(),
-    })
-
+   
     const { id } = registreParamSchema.parse(request.params)
-    const { page, limit } = registrerQuerySchema.parse(request.query)
-
+    
     const findPostagemByIdUseCase = makeFindPostagemByIdUseCase()
 
-    const postagem = await findPostagemByIdUseCase.handler(
-        id,
-        page,
-        limit
-    )
-
+    const postagem = await findPostagemByIdUseCase.handler(id)
+    
     return reply.status(200).send(postagem)
     
 }

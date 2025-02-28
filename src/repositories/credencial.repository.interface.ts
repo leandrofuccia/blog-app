@@ -4,3 +4,5 @@ export interface ICredencialRepository{
     create (credencial: ICredencial): Promise<ICredencial | undefined>
     findByUsername(username: string) : Promise<ICredencial>
 }
+
+export { ICredencial }

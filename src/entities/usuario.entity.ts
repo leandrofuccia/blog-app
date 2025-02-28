@@ -21,27 +21,27 @@ export class Usuario implements IUsuario {
     
     @Column({
       name: 'perfilid',
-      type: 'int4'
+      type: 'int'
     })
     perfilid: number
 
     @Column({
       name: 'datacriacao',
-      type: 'timestamp without time zone',
-      default: () => 'CURRENT TIMESTAMP'
+      type: process.env.NODE_ENV === "test" ? "text" : "timestamp without time zone",
+      default: () => process.env.NODE_ENV === "test" ? "CURRENT_TIMESTAMP" : "'now()'"
     })
     datacriacao?: Date
 
     @Column({
       name: 'ultimologin',
-      type: 'timestamp without time zone',
-      default: () => 'CURRENT TIMESTAMP'
+      type: process.env.NODE_ENV === "test" ? "text" : "timestamp without time zone",
+      default: () => process.env.NODE_ENV === "test" ? "CURRENT_TIMESTAMP" : "'now()'"
     })
     ultimologin?: Date
 
     @Column({
       name: 'credencialid',
-      type: 'int4'
+      type: 'int'
     })
     credencialId?: number
 

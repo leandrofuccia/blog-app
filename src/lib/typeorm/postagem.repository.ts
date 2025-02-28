@@ -10,15 +10,17 @@ import { IPostagemRepository } from "@/repositories/postagem.repository.interfac
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
 
 export class PostagemRepository implements IPostagemRepository{
+    static mockImplementation(arg0: () => IPostagemRepository) {
+        throw new Error("Method not implemented.");
+    }
 
     private repository: Repository<Postagem>
-
+   
     constructor(){
-
         this.repository = appDataSource.getRepository(Postagem)
     }
 
-    async create(postagem: IPostagem): Promise<IPostagem | undefined> {
+    async create(postagem: IPostagem): Promise<IPostagem> {
         console.log('Creating post:', postagem);
         return this.repository.save(postagem)
           
@@ -41,7 +43,6 @@ export class PostagemRepository implements IPostagemRepository{
               usuario: {
                   id: postagem.usuario.id,
                   nome: postagem.usuario.nome,
-                  email: postagem.usuario.email,
                   perfilid: postagem.usuario.perfilid                  
               }
           } as unknown as IPostagem & IUsuario;
@@ -49,7 +50,7 @@ export class PostagemRepository implements IPostagemRepository{
       }
 
 
-    async update (id: number, titulo: string, conteudo: string): Promise<IPostagem | undefined >{
+    async update (id: number, titulo: string, conteudo: string): Promise<IPostagem>{
         const postagem = await this.repository.findOne({ where: { id } });
         
         if (!postagem) throw new ResourceNotFoundError()
@@ -68,10 +69,10 @@ export class PostagemRepository implements IPostagemRepository{
     
 
 
-    async findPostagemById(id: number): Promise<IPostagem | undefined> {
+    async findPostagemById(id: number): Promise<IPostagem> {
         return this.repository.findOne({          
           where: { id },
-        }) as Promise<IPostagem | undefined>;
+        }) as Promise<IPostagem>;
       }
     
 
@@ -81,11 +82,18 @@ export class PostagemRepository implements IPostagemRepository{
     
         const queryBuilder = this.repository.createQueryBuilder("postagem");
     
-        if (palavrasChave) {
+        /*if (palavrasChave) {
           queryBuilder.where("postagem.titulo ILIKE :palavrasChave OR postagem.conteudo ILIKE :palavrasChave", {
             palavrasChave: `%${palavrasChave}%`,
           });
-        }
+        }*/
+
+          if (palavrasChave) {
+            queryBuilder.where(
+                "LOWER(postagem.titulo) LIKE LOWER(:palavrasChave) OR LOWER(postagem.conteudo) LIKE LOWER(:palavrasChave)", 
+                { palavrasChave: `%${palavrasChave.toLowerCase()}%` }
+            );
+        }  
     
         queryBuilder.skip(offset).take(limit);
     

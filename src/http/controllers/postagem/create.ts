@@ -19,9 +19,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     console.log('Chamando função handler');
     const postagem = await createPostagemUseCase.handler({titulo, conteudo, usuarioid})
 
-        //return reply.send({ message: 'Usuário criado com sucesso!' });
-    //return reply.status(201).send({ id: usuario?.id, nome: usuario?.nome,  email: usuario?.email, senha: usuario?.senha, perfilid: usuario?.perfilid})
-    
+         
     reply.code(201).send(postagem)
     
 }

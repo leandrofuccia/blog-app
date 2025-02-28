@@ -1,5 +1,4 @@
 import { makeDeletePostagemUseCase } from "@/use-cases/factory/make-delete-postagem-use-case"
-import { makeFindPostagemByUsuarioUseCase } from "@/use-cases/factory/make-find-postagem-by-usuario"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { z } from "zod"
 
@@ -17,6 +16,6 @@ export async function deletePostagem(
 
     await deletePostagemUseCase.handler(id)  
     
-    return reply.status(204).send()
+    return reply.code(204).send();
     
 }

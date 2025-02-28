@@ -9,10 +9,10 @@ export interface IPostagemRepository{
             limit: number,
          ): Promise<(IPostagem & IUsuario)[]>
 
-    create (postagem: IPostagem): Promise<IPostagem | undefined>
+    create (postagem: IPostagem): Promise<IPostagem>
 
     
-    update (id: number, titulo: string, conteudo: string): Promise<IPostagem | undefined >
+    update (id: number, titulo: string, conteudo: string): Promise<IPostagem >
 
     
      delete (id: number): Promise<void>
@@ -20,9 +20,7 @@ export interface IPostagemRepository{
 
      findPostagemById(
         id: number, 
-        /*page: number, 
-        limit: number,*/
-     ): Promise<IPostagem | undefined >
+     ): Promise<IPostagem>
 
 
      findPostagemBySearch(
