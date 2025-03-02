@@ -7,12 +7,30 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
 
     runs-on: ubuntu-latest
 
     steps:
+    # 1. Fazer checkout do repositório
     - uses: actions/checkout@v4
+
+    # 2. Build da imagem Docker
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+    # 3. Subir o container para teste
+    - name: Run Docker container
+      run: docker run -d -p 3002:3002 --name my-container-name my-image-name:$(date +%s)
+
+    # 4. Testar a acessibilidade do Swagger
+    - name: Test Swagger
+      run: |
+        sleep 5 # Esperar o container subir
+        curl -I http://localhost:3002/docs
+
+    # 5. (Opcional) Parar e remover o container após os testes
+    - name: Clean up
+      run: |
+        docker stop my-container-name
+        docker rm my-container-name
