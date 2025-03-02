@@ -1,5 +1,5 @@
 # Use a imagem oficial do Node.js como base
-FROM node:14
+FROM node:22
 
 # Defina o diretório de trabalho no contêiner
 WORKDIR /usr/src/app
@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Instale as dependências do projeto
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Copie todo o código-fonte da aplicação para o diretório de trabalho
 COPY . .
