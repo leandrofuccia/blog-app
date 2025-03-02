@@ -56,3 +56,5 @@ ALTER TABLE credencial
 ADD CONSTRAINT unique_usuario 
 UNIQUE (id);
 
+INSERT INTO perfil VALUES (1, 'Aluno');
+INSERT INTO perfil VALUES (2, 'Professor');
