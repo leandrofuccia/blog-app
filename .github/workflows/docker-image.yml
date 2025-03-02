@@ -24,7 +24,7 @@ jobs:
       - name: Set environment variables
         env:
           PORT: 3002
-          NODE_ENV: development
+          NODE_ENV: test
           DATABASE_USER: postgres
           DATABASE_HOST: localhost
           DATABASE_NAME: blogdb
