@@ -10,6 +10,7 @@ app.listen({
 })*/
 
 
+//import { DocumentBuilder } from '@/node_modules/fastify-swagger';
 import { app } from './app';
 
 app.listen({ port: 3002 }, (err, address) => {
@@ -17,5 +18,7 @@ app.listen({ port: 3002 }, (err, address) => {
     console.error(err);
     process.exit(1);
   }
-  console.log(`Server is running on ${address}`);
+  console.log(`Server is running on ${address}`);  
+  
+  
 });

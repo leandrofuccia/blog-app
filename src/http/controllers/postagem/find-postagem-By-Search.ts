@@ -11,19 +11,22 @@ export async function findPostagemBySearch(
     })
 
     const registrerQuerySchema = z.object({
-        page: z.coerce.number(),
-        limit: z.coerce.number(),
+        page: z.coerce.number().optional(),
+        limit: z.coerce.number().optional(),
     })
 
     const { termo } = registreParamSchema.parse(request.params)
     const { page, limit } = registrerQuerySchema.parse(request.query)
 
+    const pageNumber = page ?? 1
+    const limitNumber = limit ?? 10
+
     const findPostagemBySearchUseCase = makeFindPostagemBySearchUseCase()
 
     const postagem = await findPostagemBySearchUseCase.handler(
         termo,
-        page,
-        limit
+        pageNumber,
+        limitNumber
     )
 
     return reply.status(200).send(postagem)
