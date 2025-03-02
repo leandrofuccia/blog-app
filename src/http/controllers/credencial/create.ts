@@ -7,12 +7,12 @@ import { z } from "zod"
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
     console.log('registrerBodySchema');
-    const registrerBodySchema = z.object({
+    const registerBodySchema = z.object({
         username: z.string(),
         password: z.string(),
     })
 
-    const {username, password} = registrerBodySchema.parse(request.body)  
+    const {username, password} = registerBodySchema.parse(request.body)  
     const hashedPassaword = await hash(password, 8)
     const userWithHashedPassword = {username, password: hashedPassaword} 
   
