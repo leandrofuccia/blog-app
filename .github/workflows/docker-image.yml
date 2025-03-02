@@ -8,43 +8,49 @@ on:
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Fazer checkout do repositório
-    - uses: actions/checkout@v4
+      # 1. Fazer checkout do repositório
+      - uses: actions/checkout@v4
 
-    # 2. Configurar Node.js
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '22' # Mesma versão do Dockerfile
+      # 2. Configurar Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
 
-    # 3. Instalar dependências
-    - name: Install dependencies
-      run: npm install --legacy-peer-deps
+      # 3. Configurar variáveis de ambiente
+      - name: Set environment variables
+        env:
+          PORT: 3002
+          NODE_ENV: development
+          DATABASE_USER: postgres
+          DATABASE_HOST: localhost
+          DATABASE_NAME: blogdb
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_PORT: 5432
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: echo "Environment variables configured!"
 
-    # 4. Executar os testes automatizados
-    - name: Run tests
-      run: npm test
+      # 4. Instalar dependências
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
 
-    # 5. Build da imagem Docker
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      # 5. Executar testes
+      - name: Run tests
+        run: npm test
 
-    # 6. Subir o container para teste
-    - name: Run Docker container
-      run: docker run -d -p 3002:3002 --name my-container-name my-image-name:$(date +%s)
+      # 6. Build da imagem Docker
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
-    # 7. Testar a acessibilidade do Swagger
-    - name: Test Swagger
-      run: |
-        sleep 5 # Espera o container iniciar
-        curl -I http://localhost:3002/docs
+      # 7. Rodar o container para teste
+      - name: Run Docker container
+        run: docker run -d -p 3002:3002 --name my-container-name my-image-name:$(date +%s)
 
-    # 8. (Opcional) Parar e remover o container após os testes
-    - name: Clean up
-      run: |
-        docker stop my-container-name
-        docker rm my-container-name
+      # 8. Testar acessibilidade do Swagger
+      - name: Test Swagger
+        run: |
+          sleep 5
+          curl -I http://localhost:3002/docs
