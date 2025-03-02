@@ -1,6 +1,7 @@
 {
   "name": "blog-app",
   "version": "1.0.0",
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
