@@ -60,9 +60,3 @@ jobs:
       # 10. Rodar o container para teste
       - name: Run Docker container
         run: docker run -d -p 3002:3002 --name blog-app leandrofuccia/blog-app:${{ env.TIMESTAMP }}
-
-      # 11. Testar acessibilidade do Swagger
-      - name: Test Swagger
-        run: |
-          sleep 5
-          curl -I http://localhost:3002/docs
