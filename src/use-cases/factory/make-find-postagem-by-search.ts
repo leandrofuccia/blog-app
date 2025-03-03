@@ -1,4 +1,4 @@
-import { PostagemRepository } from "@/repositories/pg/postagem.repository";
+import { PostagemRepository } from "@/lib/typeorm/postagem.repository";
 import { FindPostagemBySearchUseCase } from "../find-postagem-by-search";
 
 

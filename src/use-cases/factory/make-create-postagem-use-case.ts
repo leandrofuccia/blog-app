@@ -1,4 +1,3 @@
-//import { PostagemRepository } from "@/repositories/pg/postagem.repository";
 import { CreatePostagemCase } from "../create-postagem";
 import { PostagemRepository } from "@/lib/typeorm/postagem.repository";
 
