@@ -2,7 +2,7 @@
   "name": "blog-app",
   "version": "1.0.0",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "src/build/server.js",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
@@ -55,7 +55,7 @@
     "typeorm": "0.3.20",
     "typescript": "5.7.3"
   },
-  "description": "Atualmente, a maioria de professores e professoras da rede pública de educação não têm plataformas onde postar suas aulas e transmitir conhecimento para alunos e alunas de forma prática, centralizada e tecnológica. Para solucionar esse problema, criamos uma aplicação de blogging dinâmico. Portanto, preciso criar um Back-end, utilizando a plataforma de desenvolvimento node.js.",
+  "description": "Aplicação de blogging dinâmico para professores e professoras da rede pública.",
   "keywords": [],
   "author": "",
   "license": "ISC"
