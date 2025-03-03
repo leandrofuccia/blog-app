@@ -47,7 +47,7 @@ jobs:
 
       # 7. Rodar o container para teste
       - name: Run Docker container
-        run: docker run -d -p 3002:3002 --name my-container-name leandrofuccia/blog-app:$(date +%s)
+        run: docker run -d -p 3002:3002 --name blog-app leandrofuccia/blog-app:$(date +%s)
 
       # 8. Testar acessibilidade do Swagger
       - name: Test Swagger
