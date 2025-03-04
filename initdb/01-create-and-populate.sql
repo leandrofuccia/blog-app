@@ -1,44 +1,51 @@
-CREATE TABLE Perfil (
-    Id SERIAL PRIMARY KEY,
-    Nome VARCHAR(50) NOT NULL
+-- Criar a tabela Perfil
+CREATE TABLE perfil (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Credencial (
-    Id SERIAL PRIMARY KEY,
-    Username VARCHAR(255) NOT NULL UNIQUE,
-    Password VARCHAR(255) NOT NULL
+-- Criar a tabela Credencial
+CREATE TABLE credencial (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Usuario (
-    Id SERIAL PRIMARY KEY,
-    Nome VARCHAR(50) NOT NULL,
-    PerfilId INT NOT NULL,
-    DataCriacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UltimoLogin TIMESTAMP,
-    CredencialId INT,
-    FOREIGN KEY (PerfilId) REFERENCES Perfil(Id),
-    FOREIGN KEY (CredencialId) REFERENCES Credencial(id)
+-- Criar a tabela Usuario
+CREATE TABLE usuario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    perfilid INT NOT NULL,
+    datacriacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ultimologin TIMESTAMP,
+    credencialid INT,
+    FOREIGN KEY (perfilid) REFERENCES perfil(id),
+    FOREIGN KEY (credencialid) REFERENCES credencial(id)
 );
 
-CREATE TABLE Postagem (
-    Id SERIAL PRIMARY KEY,
-    Titulo VARCHAR(150) NOT NULL,
-    Conteudo TEXT NOT NULL,
-    UsuarioId INT NOT NULL,
-    DataCriacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    DataAtualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (UsuarioId) REFERENCES Usuario(Id)
+-- Criar a tabela Postagem
+CREATE TABLE postagem (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(150) NOT NULL,
+    conteudo TEXT NOT NULL,
+    usuarioid INT NOT NULL,
+    datacriacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    dataatualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuarioid) REFERENCES usuario(id)
 );
 
 -- Garantir a unicidade da chave estrangeira
-ALTER TABLE Usuario
-ADD CONSTRAINT unique_credencial 
-UNIQUE (CredencialId);
+ALTER TABLE usuario
+ADD CONSTRAINT unique_credencial UNIQUE (credencialid);
 
 -- Garantir que cada credencial é associada a um único usuário
-ALTER TABLE Credencial 
-ADD CONSTRAINT unique_usuario 
-UNIQUE (id);
+ALTER TABLE credencial 
+ADD CONSTRAINT unique_usuario UNIQUE (id);
 
 INSERT INTO perfil VALUES (1, 'Aluno');
 INSERT INTO perfil VALUES (2, 'Professor');
+
+SELECT * FROM perfil;
+SELECT * FROM credencial;
+SELECT * FROM usuario;
+SELECT * FROM postagem;
