@@ -1,10 +1,12 @@
+version: '3.8'
+
 services:
   app:
     image: leandrofuccia/blog-app:latest
     ports:
       - "3002:3002"
     environment:
-      - DATABASE_USER=your_db_user
+      - DATABASE_USER=postgres
       - DATABASE_HOST=db
       - DATABASE_NAME=blogdb
       - DATABASE_PASSWORD=your_db_password
