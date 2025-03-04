@@ -13,11 +13,9 @@ RUN apt-get update && apt-get install -y postgresql postgresql-contrib
 COPY initdb /docker-entrypoint-initdb.d/
 
 RUN service postgresql start && \
-    su - postgres -c "psql -c \"DROP DATABASE IF EXISTS blogdb;\"" && \
-    su - postgres -c "psql -c \"DROP USER IF EXISTS postgres;\"" && \
-    su - postgres -c "psql -c \"CREATE USER postgres WITH PASSWORD 'your_db_password';\"" && \
+    su - postgres -c "psql -c \"CREATE USER blogdb WITH PASSWORD 'your_db_password';\"" && \
     su - postgres -c "psql -c \"CREATE DATABASE blogdb;\"" && \
-    su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE blogdb TO postgres;\""
+    su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE blogdb TO blogdb;\""
 
 RUN npm run build
 

@@ -25,7 +25,7 @@ jobs:
         env:
           PORT: 3002
           NODE_ENV: test
-          DATABASE_USER: postgres
+          DATABASE_USER: blogdb
           DATABASE_HOST: 127.0.0.1
           DATABASE_NAME: blogdb
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
