@@ -65,9 +65,16 @@ jobs:
       - name: Push da imagem para o Docker Hub
         run: docker push leandrofuccia/blog-app:${{ env.TIMESTAMP }}
 
+      - name: Verificar container existente
+        run: docker ps -a | grep blog-app && docker rm -f blog-app || true
+
       - name: Rodar o container para teste
         run: docker run -d -p 3002:3002 --name blog-app leandrofuccia/blog-app:${{ env.TIMESTAMP }}
 
       - name: Encerra os containers do docker compose
         if: always()
         run: docker compose down
+
+      - name: Encerra o container blog-app
+        if: always()
+        run: docker stop blog-app && docker rm blog-app || true
