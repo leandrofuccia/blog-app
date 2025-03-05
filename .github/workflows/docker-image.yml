@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Configurar variáveis de ambiente
         env:
           PORT: 3002
@@ -42,9 +45,6 @@ jobs:
 
       - name: Executar testes
         run: npm test
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Build da imagem Docker
         run: docker-compose up --build
