@@ -6,7 +6,7 @@ async function startServer() {
     await initializeDatabase();
     console.log('Database initialized.');
 
-    app.listen({ port: 3002, host: '0.0.0.0' }, (err, address) => {
+    app.listen({ port: 3002, host: 'localhost' }, (err, address) => {
       if (err) {
         console.error('Error starting server:', err);
         process.exit(1);
