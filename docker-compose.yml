@@ -14,7 +14,6 @@ services:
       - JWT_SECRET=sua_chave_secreta
     depends_on:
       - db
-    command: ["sleep", "15", "node", "build/server.cjs"]
 
   db:
     image: postgres:latest
