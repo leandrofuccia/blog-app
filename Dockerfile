@@ -12,6 +12,8 @@ COPY . .
 
 RUN npm run build
 
+RUN chmod +x wait-for-it.sh
+
 EXPOSE 3002
 
-CMD ["node", "build/server.cjs"]
+CMD ["./wait-for-it.sh", "db:5432", "--", "node", "build/server.cjs"]
