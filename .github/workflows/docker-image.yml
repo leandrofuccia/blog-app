@@ -18,14 +18,16 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Configurar Docker Buildx
-        uses: docker/setup-buildx-action@v3.1.0
+      - name: Verificar versão do Docker
+        run: docker --version
+
+      - name: Baixar docker-compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose-plugin
 
       - name: Verificar instalação do docker-compose
-        run: docker-compose --version
-
-      - name: Verificar permissões do docker-compose
-        run: which docker-compose && ls -l $(which docker-compose)
+        run: docker compose version
 
       - name: Configurar variáveis de ambiente
         env:
@@ -53,7 +55,7 @@ jobs:
         run: npm test
 
       - name: Build da imagem Docker
-        run: docker-compose up --build
+        run: docker compose up --build
 
       - name: Definir tag da imagem Docker
         run: docker tag leandrofuccia/blog-app:${{ env.TIMESTAMP }} leandrofuccia/blog-app:${{ env.TIMESTAMP }}
