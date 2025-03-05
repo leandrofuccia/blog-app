@@ -59,9 +59,6 @@ jobs:
       - name: Build da imagem Docker
         run: docker compose up --build -d
 
-      - name: Definir tag da imagem Docker
-        run: docker tag leandrofuccia/blog-app:${{ env.TIMESTAMP }} leandrofuccia/blog-app:${{ env.TIMESTAMP }}
-
       - name: Login no Docker Hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 

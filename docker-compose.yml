@@ -2,7 +2,7 @@ services:
   app:
     build: .
     container_name: blog_app
-    image: leandrofuccia/blog-app:latest
+    image: leandrofuccia/blog-app:${TIMESTAMP:-latest}
     ports:
       - "3002:3002"
     environment:
