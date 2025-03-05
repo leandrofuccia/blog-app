@@ -19,7 +19,13 @@ jobs:
           node-version: '22'
 
       - name: Configurar Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3.1.0
+
+      - name: Verificar instalação do docker-compose
+        run: docker-compose --version
+
+      - name: Verificar permissões do docker-compose
+        run: which docker-compose && ls -l $(which docker-compose)
 
       - name: Configurar variáveis de ambiente
         env:
