@@ -8,7 +8,8 @@
     "start": "node build/server.js",
     "build": "tsup src --out-dir build",
     "test": "cross-env NODE_ENV=test jest --runInBand --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "dev": "nodemon --legacy-watch app.ts"
   },
   "dependencies": {
     "@fastify/jwt": "9.0.4",
@@ -20,9 +21,12 @@
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "fastify-static": "4.7.0",
     "fastify-swagger": "5.2.0",
     "fastify-type-provider-zod": "4.0.2",
     "pg": "8.13.3",
+    "redoc": "2.4.0",
+    "redoc-express": "2.1.0",
     "reflect-metadata": "0.2.2",
     "swagger-jsdoc": "6.2.8",
     "zod": "3.24.2"

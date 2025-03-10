@@ -1,20 +1,23 @@
 services:
   app:
-    build: .
+    build:
+      context: .
     container_name: blog_app
     image: leandrofuccia/blog-app:${TIMESTAMP:-latest}
     ports:
       - "3002:3002"
-    environment:
-      - DATABASE_USER=blogdb
-      - DATABASE_HOST=db
-      - DATABASE_NAME=blogdb
-      - DATABASE_PASSWORD=sua_senha_segura
-      - DATABASE_PORT=5432
-      - JWT_SECRET=sua_chave_secreta
+    environment:    
+      DATABASE_USER: blogdb
+      DATABASE_HOST: db
+      DATABASE_NAME: blogdb
+      DATABASE_PASSWORD: sua_senha_segura
+      DATABASE_PORT: 5432
+      JWT_SECRET: sua_chave_secreta
     depends_on:
       - db
     command: "./wait-for-it.sh db:5432 -- node build/server.cjs"
+    networks:
+      - app-network
 
   db:
     image: postgres:latest
@@ -28,6 +31,12 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./initdb/01-create-and-populate.sql:/docker-entrypoint-initdb.d/01-create-and-populate.sql
+    networks:
+      - app-network
 
 volumes:
   db_data:
+
+networks:
+  app-network:
+    driver: bridge

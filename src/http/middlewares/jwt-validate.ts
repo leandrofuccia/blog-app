@@ -17,7 +17,8 @@ export async function validateJwt(
             'GET-/docs/static/swagger-ui-bundle.js',
             'GET-/docs/static/swagger-initializer.js',
             'GET-/docs/static/favicon-32x32.png',
-            'GET-/docs/static/favicon-16x16.png'
+            'GET-/docs/static/favicon-16x16.png',
+            'GET-/redoc'
         ];
         
         const validateRoute = `${request.method}-${request.url}` // Remove o espaço ao redor do hífen
