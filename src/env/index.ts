@@ -1,4 +1,4 @@
-/*import dotenv from "dotenv";
+import dotenv from "dotenv";
 import path from "path";
 import { z } from "zod";
 
@@ -63,9 +63,9 @@ console.log("Variáveis de ambiente validadas:", _env.data);
 // Exporta as variáveis para uso na aplicação
 export const env = _env.data;
 
-*/
 
-import dotenv from "dotenv";
+
+/*import dotenv from "dotenv";
 import path from "path";
 import { z } from "zod";
 
@@ -137,4 +137,4 @@ let env: any; // Declara a variável no escopo global
 })();
 
 export { env }; // Agora a variável é exportada corretamente
-
+*/
