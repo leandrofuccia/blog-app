@@ -13,6 +13,8 @@ if (nodeEnvAux !== "test" ) {
 const envPath = path.resolve(process.cwd(), './.env');
 dotenv.config({ path: envPath });
 
+console.log("Variáveis de ambiente carregadas:", process.env);
+
 // Define valores padrão para ambiente de teste
 const testDefaults = {
   NODE_ENV: "test",
@@ -24,6 +26,7 @@ const testDefaults = {
   DATABASE_PORT: "",
   JWT_SECRET: "test_secret",
 };
+
 
 // Determina o ambiente final com base no NODE_ENV
 const environment =
