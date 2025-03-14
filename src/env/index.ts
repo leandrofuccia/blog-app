@@ -7,10 +7,10 @@ const nodeEnvAux = process.env.NODE_ENV;
 console.log("Variáveis de ambiente carregadas 1:", process.env);
 
 // Limpa todas as variáveis de ambiente previamente definidas para evitar conflitos
-if (nodeEnvAux !== "test" ) {
+/*if (nodeEnvAux !== "test" ) {
   Object.keys(process.env).forEach((key) => { delete process.env[key]; });
 }
-
+*/
 // Carrega as variáveis do arquivo .env com o caminho absoluto
 const envPath = path.resolve(process.cwd(), './.env');
 dotenv.config({ path: envPath });
@@ -41,6 +41,8 @@ const environment =
             ? "db" // Host especial para Docker
             : process.env.DATABASE_HOST,
       };
+
+  console.log("Variáveis de ambiente carregadas 3 :", process.env);   
 
 // Define o esquema de validação para as variáveis de ambiente
 const envSchema = z.object({
