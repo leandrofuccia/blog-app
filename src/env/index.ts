@@ -4,6 +4,8 @@ import { z } from "zod";
 
 const nodeEnvAux = process.env.NODE_ENV;
 
+console.log("Variáveis de ambiente carregadas 1:", process.env);
+
 // Limpa todas as variáveis de ambiente previamente definidas para evitar conflitos
 if (nodeEnvAux !== "test" ) {
   Object.keys(process.env).forEach((key) => { delete process.env[key]; });
@@ -13,7 +15,7 @@ if (nodeEnvAux !== "test" ) {
 const envPath = path.resolve(process.cwd(), './.env');
 dotenv.config({ path: envPath });
 
-console.log("Variáveis de ambiente carregadas:", process.env);
+console.log("Variáveis de ambiente carregadas 2 :", process.env);
 
 // Define valores padrão para ambiente de teste
 const testDefaults = {
