@@ -6,7 +6,8 @@ services:
     image: leandrofuccia/blog-app:${TIMESTAMP:-latest}
     ports:
       - "3002:3002"
-    environment:    
+    environment:
+      NODE_ENV: development    
       DATABASE_USER: blogdb
       DATABASE_HOST: db
       DATABASE_NAME: blogdb
