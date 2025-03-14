@@ -67,11 +67,9 @@ jobs:
 
       - name: Push da imagem para o Docker Hub
         run: docker push leandrofuccia/blog-app:${{ env.TIMESTAMP }}
-
+      
       - name: Adicionar tag latest à imagem
-        run: 
-          docker tag leandrofuccia/blog-app:${{ env.TIMESTAMP }} leandrofuccia/blog-app:latest
-          docker push leandrofuccia/blog-app:latest
+        run: docker tag leandrofuccia/blog-app:${{ env.TIMESTAMP }} leandrofuccia/blog-app:latest; docker push leandrofuccia/blog-app:latest
 
       - name: Encerra os containers do docker compose
         if: always()
