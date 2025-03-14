@@ -36,7 +36,7 @@ jobs:
           PORT: 3002
           NODE_ENV: test
           DATABASE_USER: blogdb
-          DATABASE_HOST: localhost
+          DATABASE_HOST: db
           DATABASE_NAME: blogdb
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           DATABASE_PORT: 5432
@@ -67,6 +67,11 @@ jobs:
 
       - name: Push da imagem para o Docker Hub
         run: docker push leandrofuccia/blog-app:${{ env.TIMESTAMP }}
+
+      - name: Adicionar tag latest à imagem
+        run: 
+          docker tag leandrofuccia/blog-app:${{ env.TIMESTAMP }} leandrofuccia/blog-app:latest
+          docker push leandrofuccia/blog-app:latest
 
       - name: Encerra os containers do docker compose
         if: always()
