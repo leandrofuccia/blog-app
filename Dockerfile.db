@@ -1,0 +1,7 @@
+FROM postgres:latest
+
+# Cria o diretório (caso não exista) e copia o script SQL para dentro da imagem
+COPY initdb/01-create-and-populate.sql /docker-entrypoint-initdb.d/
+
+# Define permissões para garantir que o PostgreSQL possa ler o arquivo
+RUN chmod 644 /docker-entrypoint-initdb.d/01-create-and-populate.sql

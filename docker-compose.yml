@@ -21,6 +21,9 @@ services:
       - app-network
 
   db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db  # Aponta para o novo Dockerfile do PostgreSQL
     image: postgres:latest
     container_name: postgres_db
     environment:
@@ -31,8 +34,7 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./initdb/01-create-and-populate.sql:/docker-entrypoint-initdb.d/01-create-and-populate.sql
-     
+                 
     networks:
       - app-network
 
