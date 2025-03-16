@@ -137,7 +137,7 @@ A imagem da aplicação está disponível no repositório do Docker Hub [leandro
 
 #### **3. Baixando o Arquivo Docker Compose**
 
-O arquivo [docker-compose.yml](https://raw.githubusercontent.com/leandrofuccia/blog-app/refs/heads/main/docker-compose.yml) está disponível no repositório do GitHub [leandrofuccia/blog-app]. Faça o download em uma pasta local.
+O arquivo [docker-compose.yml](https://raw.githubusercontent.com/leandrofuccia/blog-app/refs/heads/main/docker-compose.yml) está disponível no repositório do GitHub [leandrofuccia/blog-app](https://github.com/leandrofuccia/blog-app). Faça o download em uma pasta local.
 
 #### **4. Iniciando os Contêineres**
 
