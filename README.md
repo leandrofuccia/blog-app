@@ -1,4 +1,10 @@
-# O problema
+# Documentação do Tech-challenge - Fase 2
+
+Este documento descreve o funcionamento de uma aplicação de blogging dinâmico para que professores da rede pública de educação transmitam conhecimento para seus alunos.
+Conforme requisitos técnicos, foi disponibilizada uma API contendo endpoints para permitir o cadastro e a consulta de postagens, conforme descrição abaixo.
+Nesta fase disponibilizamos apenas o módulo backend.
+A aplicação possui 2 perfis de uso (Professor e Aluno), o qual é selecionado na tela inicial (sem autenticação). As funcionalidades comuns a ambos os perfis são compartilhadas (visualização de postagens existentes de todos os professores autores) e as demais permanecem restritas ao perfil Professor (criar, editar e excluir postagens).
+
 
 Atualmente, a maioria de professores e professoras da rede pública de educação não têm plataformas onde postar suas aulas e transmitir conhecimento para alunos e alunas de forma prática, centralizada e tecnológica. Para solucionar esse problema, criamos uma aplicação de blogging dinâmico. Portanto, preciso criar um Back-end, utilizando a plataforma de desenvolvimento node.js.
 
