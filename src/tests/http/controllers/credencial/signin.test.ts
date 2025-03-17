@@ -2,45 +2,63 @@ import { signin } from '@/http/controllers/credencial/signin';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error';
 import { makeSigninUseCase } from '@/use-cases/factory/make-signin-use-case';
+import { makeFindUsuarioByCredencialUseCase } from '@/use-cases/factory/make-find-usuario-by-credencial';
 import { compare } from 'bcryptjs';
 
-jest.mock('@/use-cases/factory/make-signin-use-case');
+// Mock das funções
+jest.mock('@/use-cases/factory/make-signin-use-case', () => ({
+  makeSigninUseCase: jest.fn(),
+}));
+
+jest.mock('@/use-cases/factory/make-find-usuario-by-credencial', () => ({
+  makeFindUsuarioByCredencialUseCase: jest.fn(),
+}));
+
 jest.mock('bcryptjs');
 
 describe('Signin Controller', () => {
   let request: FastifyRequest;
   let reply: FastifyReply;
+  let mockSigninUseCase: jest.Mock;
+  let mockFindUsuarioByCredencialUseCase: jest.Mock;
 
   beforeEach(() => {
+    mockSigninUseCase = jest.fn().mockResolvedValue({
+      id: 1,
+      username: 'testuser',
+      password: 'hashedpassword',
+    });
+
+    mockFindUsuarioByCredencialUseCase = jest.fn().mockResolvedValue([{ id: 1 }]);
+
+    (makeSigninUseCase as jest.Mock).mockReturnValue({ handler: mockSigninUseCase });
+    (makeFindUsuarioByCredencialUseCase as jest.Mock).mockReturnValue({
+      handler: mockFindUsuarioByCredencialUseCase,
+    });
+
+    (compare as jest.Mock).mockResolvedValue(true);
+
     request = {
       body: {
         username: 'testuser',
         password: 'password123',
       },
-    } as FastifyRequest;
+    } as unknown as FastifyRequest;
 
     reply = {
       status: jest.fn().mockReturnThis(),
       send: jest.fn(),
       jwtSign: jest.fn().mockResolvedValue('fake-jwt-token'),
     } as unknown as FastifyReply;
-
-    (makeSigninUseCase as jest.Mock).mockReturnValue({
-      handler: jest.fn().mockResolvedValue({
-        username: 'testuser',
-        password: 'hashedpassword',
-      }),
-    });
-
-    (compare as jest.Mock).mockResolvedValue(true);
   });
 
   it('deve fazer login com sucesso e retornar um token', async () => {
     await signin(request, reply);
 
-    expect(makeSigninUseCase().handler).toHaveBeenCalledWith('testuser');
+    expect(mockSigninUseCase).toHaveBeenCalledWith('testuser');
     expect(compare).toHaveBeenCalledWith('password123', 'hashedpassword');
-    expect(reply.jwtSign).toHaveBeenCalledWith({ username: 'testuser' });
+    expect(mockFindUsuarioByCredencialUseCase).toHaveBeenCalledWith(1);
+    expect(reply.jwtSign).toHaveBeenCalledWith({ username: 'testuser', usuarioId: 1 });
     expect(reply.status).toHaveBeenCalledWith(200);
     expect(reply.send).toHaveBeenCalledWith({ token: 'fake-jwt-token' });
   });

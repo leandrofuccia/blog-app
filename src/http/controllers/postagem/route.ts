@@ -33,8 +33,7 @@ export async function postagemRoutes(app: FastifyInstance) {
     tags: ['Postagem'],
     body: z.object({
       titulo: z.string(),
-      conteudo: z.string(),
-      usuarioid: z.coerce.number(),
+      conteudo: z.string(),      
     }),
     response: {
       200: z.object({

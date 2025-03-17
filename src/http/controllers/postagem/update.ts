@@ -13,16 +13,17 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
     
     const registrerBodySchema = z.object({
         titulo: z.string(),
-        conteudo: z.string(),  
-        usuarioid: z.coerce.number(),
+        conteudo: z.string(),     
     })
 
     const { id } = registreParamSchema.parse(request.params)
 
-    const {titulo, conteudo, usuarioid} = registrerBodySchema.parse(request.body)
+    const {titulo, conteudo} = registrerBodySchema.parse(request.body)
+
+    const { username, usuarioId } = request.user as { username: string; usuarioId: number };
 
     const findByUserIdUseCase = makeFindUsuarioByIdUseCase()  
-    const usuario = await findByUserIdUseCase.handler(usuarioid)
+    const usuario = await findByUserIdUseCase.handler(usuarioId)
     console.log("Perfil ",  usuario.perfilid)    
     if (usuario.perfilid !== 2) {
         throw new unauthorizedPerfilError()
