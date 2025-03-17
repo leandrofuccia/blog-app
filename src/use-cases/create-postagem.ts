@@ -4,7 +4,7 @@ import { IPostagemRepository } from "@/repositories/postagem.repository.interfac
 export class CreatePostagemCase {
   constructor(private postagemRepository: IPostagemRepository) {}
 
-  handler (postagem: IPostagem): Promise<IPostagem | undefined> {
+  async handler (postagem: IPostagem): Promise<IPostagem | undefined> {
     return this.postagemRepository.create(postagem)
   }
 }

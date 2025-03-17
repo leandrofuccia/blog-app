@@ -28,6 +28,10 @@ export async function validateJwt(
         if (routeFreeList.includes(validateRoute)) return
 
         await request.jwtVerify ()
+
+        // Decodificar e validar o token JWT
+        const decoded = await request.jwtVerify();
+        request.user = decoded as { username: string; usuarioId: number };
         
     } catch (error) {
         reply.status(401).send({ message: 'Unauthorized' });

@@ -8,4 +8,6 @@ export interface IUsuarioRepository{
     findUsuarioByCredencialId(
                 usuarioId: number                 
              ): Promise<(IUsuario & ICredencial)[]>
+
+    findByUserId(id: number) : Promise<IUsuario>         
 }

@@ -1,4 +1,5 @@
 import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error'
+import { makeFindUsuarioByCredencialUseCase } from '@/use-cases/factory/make-find-usuario-by-credencial'
 import { makeSigninUseCase } from '@/use-cases/factory/make-signin-use-case'
 import { compare } from 'bcryptjs'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -28,8 +29,20 @@ export async function signin(request: FastifyRequest, reply: FastifyReply) {
     if (!doestPasswordMatch) {
       throw new InvalidCredentialsError()
     }
+
+    const findUsuarioByCredencialIdUseCase = makeFindUsuarioByCredencialUseCase()  
+    const  usuario = await findUsuarioByCredencialIdUseCase.handler(user.id!)
+
+    console.log('usuario', usuario)
+
+    // Acessando o primeiro elemento
+    const {id } = usuario[0];
+
+    console.log('signin.ts usuarioId', id)
+
+    const usuarioId = id
   
-    const token = await reply.jwtSign({ username })
+    const token = await reply.jwtSign({ username, usuarioId })
   
     return reply.status(200).send({ token })
   }

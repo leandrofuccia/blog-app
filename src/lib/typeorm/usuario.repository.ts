@@ -47,6 +47,11 @@ export class UsuarioRepository implements IUsuarioRepository{
         });
     }
 
+    findByUserId(id: number) : Promise<IUsuario>{
+        return this.repository.findOne({          
+                  where: { id },
+        }) as Promise<IUsuario>;
 
+    }
 
 }
