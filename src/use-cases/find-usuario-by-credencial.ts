@@ -4,7 +4,6 @@ import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { IUsuarioRepository } from "@/repositories/usuario.repository.interface";
 import { IUsuario } from "@/entities/models/usuario.interface";
 
-
 export class FindUsuarioByCredencialUseCase{
     constructor(private usuarioRepository: IUsuarioRepository){}
 

@@ -1,6 +1,5 @@
 import { IPostagemRepository } from "@/repositories/postagem.repository.interface";
 
-
 export class UpdatePostagemUseCase {
   constructor(private postagemRepository: IPostagemRepository){}
    

@@ -1,7 +1,6 @@
 import { IPostagem } from "@/entities/models/postagem.interface";
 import { IPostagemRepository } from "@/repositories/postagem.repository.interface";
 
-
 export class FindPostagemUseCase{
     constructor(private postagemRepository: IPostagemRepository){}
 
