@@ -1,5 +1,5 @@
 import { IUsuario } from "./models/usuario.interface"
-import {Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
+import {Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Postagem } from "./postagem.entity"
 import { Credencial } from "./credencial.entity"
 
@@ -48,7 +48,7 @@ export class Usuario implements IUsuario {
     @OneToMany(() => Postagem, postagem => postagem.usuarioid)
 
     @OneToOne(() => Credencial, credencial => credencial.usuario)
-    @JoinColumn({ name: 'credencialid' })  // Usar @JoinColumn para especificar a coluna de junção
+    @JoinColumn({ name: 'credencialid' })
     credencial?: Credencial;
 
     @JoinTable({
@@ -59,11 +59,8 @@ export class Usuario implements IUsuario {
       },
 
     })
-    
-       
-    
-    postagens?: Postagem[];
 
+    postagens?: Postagem[];
    
     constructor(nome: string, perfilid: number) {
       this.nome = nome

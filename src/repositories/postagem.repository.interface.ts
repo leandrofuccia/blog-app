@@ -3,38 +3,31 @@ import { IUsuario } from "@/entities/models/usuario.interface";
 
 export interface IPostagemRepository{
   
-    findPostagemByUsuarioId(
-            usuarioId: number, 
-            page: number, 
-            limit: number,
-         ): Promise<(IPostagem & IUsuario)[]>
+   findPostagemByUsuarioId(
+      usuarioId: number, 
+      page: number, 
+      limit: number,
+   ): Promise<(IPostagem & IUsuario)[]>
 
-    create (postagem: IPostagem): Promise<IPostagem>
+   create (postagem: IPostagem): Promise<IPostagem>
 
+   update (id: number, titulo: string, conteudo: string): Promise<IPostagem >
     
-    update (id: number, titulo: string, conteudo: string): Promise<IPostagem >
+   delete (id: number): Promise<void>
 
-    
-     delete (id: number): Promise<void>
+   findPostagemById(
+      id: number, 
+   ): Promise<IPostagem>
 
-
-     findPostagemById(
-        id: number, 
-     ): Promise<IPostagem>
-
-
-     findPostagemBySearch(
+   findPostagemBySearch(
       palavrasChave: string, 
       page: number, 
       limit: number,
    ): Promise<(IPostagem)[]>
-
    
    findPostagem(
       page: number, 
       limit: number,
    ): Promise<(IPostagem)[]>
-   
 
-    
 }

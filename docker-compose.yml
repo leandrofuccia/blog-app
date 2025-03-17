@@ -23,7 +23,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: Dockerfile.db  # Aponta para o novo Dockerfile do PostgreSQL
+      dockerfile: Dockerfile.db
     image: postgres:latest
     container_name: postgres_db
     environment:

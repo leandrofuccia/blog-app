@@ -11,9 +11,8 @@ import { z } from "zod";
 export async function postagemRoutes(app: FastifyInstance) {
   console.log('Registrando rota /posts');
 
-  // Definição do esquema para a rota POST de criação
   const postagemSchema = {
-    tags: ['Postagem'], // 🔹 Definindo a tag para agrupar as rotas de postagem
+    tags: ['Postagem'],
     body: z.object({
       titulo: z.string(),
       conteudo: z.string(),
@@ -50,7 +49,6 @@ export async function postagemRoutes(app: FastifyInstance) {
       }),
     },
   };
-  
 
   // Esquema para query params
   const requestQuerySchema = z.object({
