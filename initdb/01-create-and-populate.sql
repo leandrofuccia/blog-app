@@ -7,7 +7,7 @@ CREATE TABLE perfil (
 -- Criar a tabela Credencial
 CREATE TABLE credencial (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
+    username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
@@ -40,7 +40,7 @@ ADD CONSTRAINT unique_credencial UNIQUE (credencialid);
 
 -- Garantir que cada credencial é associada a um único usuário
 ALTER TABLE credencial 
-ADD CONSTRAINT unique_usuario UNIQUE (id);
+ADD CONSTRAINT unique_usuario UNIQUE (username);
 
 INSERT INTO perfil VALUES (1, 'Aluno');
 INSERT INTO perfil VALUES (2, 'Professor');
