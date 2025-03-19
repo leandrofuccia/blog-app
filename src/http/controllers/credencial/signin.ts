@@ -35,15 +35,18 @@ export async function signin(request: FastifyRequest, reply: FastifyReply) {
 
     console.log('usuario', usuario)
 
-    // Acessando o primeiro elemento
-    const {id } = usuario[0];
+    
+    let token: string;
 
-    console.log('signin.ts usuarioId', id)
+    if (!usuario || (usuario).length === 0) {
+      token = await reply.jwtSign({ username})
+    }else{      
+      const {id } = usuario[0];
+      console.log('signin.ts usuarioId', id)
+      const usuarioId = id
+      token = await reply.jwtSign({ username, usuarioId })
+    }
 
-    const usuarioId = id
-  
-    const token = await reply.jwtSign({ username, usuarioId })
-  
     return reply.status(200).send({ token })
   }
   

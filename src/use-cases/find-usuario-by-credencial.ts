@@ -11,10 +11,6 @@ export class FindUsuarioByCredencialUseCase{
         credencialId: number
     ): Promise<(IUsuario & ICredencial)[]> {
         const usuario =  await this.usuarioRepository.findUsuarioByCredencialId(credencialId)
-        if (!usuario || (usuario).length === 0) {
-                throw new ResourceNotFoundError();
-              }
-          
         return usuario;
     }
 }
