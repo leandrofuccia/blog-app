@@ -14,8 +14,14 @@ A aplicação possui 2 perfis de uso (Professor e Aluno), com autenticação. As
 
 - **Framework:** Desenvolvido em **Node.js** com o uso do framework **Fastify** para roteamento e middleware.
 - **Endpoints REST:**
+  - **POST /credencial -** Cria uma nova credencial
+  - **POST /credencial/signin -** Permite a autenticação do usuário
+  - **POST /usuario -** Cria um novo usuário
+  - **GET /usuario/:usuarioId -** Retorna os dados de um usuário específico.
+  - **GET /usuario/credencial/:credencialId -** Retorna os dados de um usuário através de uma credencial específica.
   - **GET /posts -** Lista os posts disponíveis.
   - **GET /posts/:id -** Retorna o conteúdo completo de um post específico.
+  - **GET /posts/usuario/:usuarioId -** Lista os posts disponíveis de um usuário específico.
   - **POST /posts -** Permite criar um novo post (dados enviados no corpo da requisição).
   - **PUT /posts/:id -** Permite atualizar um post existente.
   - **DELETE /posts/:id -** Remove um post específico.
@@ -99,13 +105,14 @@ CREATE TABLE postagem (
 
 #### 5. **Testes:**
 
-- **Jest** foi utilizado para garantir a qualidade do código e funcionalidades do backend.
+- **Jest** foi utilizado para garantir a qualidade do código realizando testes unitários.
+- Para rodar os testes unitários foi utilizado o banco de dados em memória **SQLite**.
 
 ---
 
 ## Setup Inicial
 
-Este guia orienta o usuário a baixar e executar a aplicação utilizando a imagem Docker disponível no Docker Hub. A imagem já foi preparada e automatizada para facilitar o deploy.
+Este guia orienta o usuário a baixar e executar a aplicação utilizando a imagem Docker disponível no Docker Hub.
 
 #### **1. Requisitos**
 
@@ -155,7 +162,7 @@ O arquivo [docker-compose.yml](https://raw.githubusercontent.com/leandrofuccia/b
 > Os serviços devem incluir:
 >
 > - `blog_app`: Aplicação
-> - `blog_db`: Banco de dados PostgreSQL
+> - `postgres_db`: Banco de dados PostgreSQL
 
 #### **5. Testando a Aplicação**
 
@@ -210,13 +217,13 @@ Antes de criar um usuário, é necessário criar uma credencial (e-mail e senha)
     "password": "suaSenha123"
   }
   ```
-- **Resposta de Sucesso (200):**
+- **Resposta de Sucesso (201):**
   ```json
   {
-    "token": "tokenDeAutenticacao"
+    "id": 2,
+    "username": "seuemail@dominio.com"
   }
   ```
-- **Exemplo no Swagger:** Acesse `POST /credencial` e insira o e-mail e a senha.
 
 #### 2. **Criar um Usuário**
 
@@ -243,7 +250,6 @@ Antes de criar um usuário, é necessário criar uma credencial (e-mail e senha)
     "token": "tokenDeAutenticacao"
   }
   ```
-- **Exemplo no Swagger:** Acesse `POST /usuario`.
 
 #### 3. Login (Autenticação)
 
@@ -296,7 +302,6 @@ POST /credencial/signin
     "token": "tokenDeAutenticacao"
   }
   ```
-- **Exemplo no Swagger:** Acesse `POST /posts`.
 
 #### 5. **Visualizar Todas as Postagens**
 
@@ -315,7 +320,6 @@ POST /credencial/signin
     }
   ]
   ```
-- **Exemplo no Swagger:** Acesse `GET /posts`.
 
 #### 6. **Buscar Postagem por ID**
 
@@ -332,7 +336,6 @@ POST /credencial/signin
     "dataatualizacao": "2025-03-16T00:00:00.000Z"
   }
   ```
-- **Exemplo no Swagger:** Acesse `GET /posts/:id` e forneça o ID.
 
 #### 7. **Editar uma Postagem (Apenas Professores)**
 
@@ -357,7 +360,6 @@ POST /credencial/signin
     "dataatualizacao": "2025-03-16T01:00:00.000Z"
   }
   ```
-- **Exemplo no Swagger:** Acesse `PUT /posts/:id`.
 
 #### 8. **Excluir uma Postagem (Apenas Professores)**
 
@@ -369,7 +371,6 @@ POST /credencial/signin
     "message": "Postagem excluída com sucesso"
   }
   ```
-- **Exemplo no Swagger:** Acesse `DELETE /posts/:id` e forneça o ID.
 
 #### 9. **Buscar Postagens por Termo de Pesquisa**
 
@@ -388,7 +389,6 @@ POST /credencial/signin
     }
   ]
   ```
-- **Exemplo no Swagger:** Acesse `GET /posts/search/:termo`.
 
 ---
 
@@ -398,7 +398,7 @@ Durante o desenvolvimento desta aplicação, enfrentamos uma série de desafios 
 
 Após a conclusão das aulas da Fase 2, foram realizadas reuniões para discussão do projeto do Tech Challenge. Com o auxílio de inteligência artificial, iniciamos com um modelo gerado a partir dos requisitos funcionais e técnicos propostos.
 
-Um ponto desafiador foi implementar a segurança na aplicação, especialmente no que diz respeito à autenticação e autorização. Configurar o uso de JSON Web Tokens (JWT) para validar as ações de professores e restringir o acesso de alunos a determinadas funcionalidades foi uma tarefa que demandou muita atenção.
+Apesar de não ser um requisito, foi desafiador implementar a segurança na aplicação, especialmente no que diz respeito à autenticação e autorização. Configurar o uso de JSON Web Tokens (JWT) para validar as ações de professores e restringir o acesso de alunos a determinadas funcionalidades foi uma tarefa que demandou muita atenção.
 
 GitHub Actions foi o ponto mais desafiador. Foram muitos testes mal sucedidos até que conseguíssemos automatizar a geração de uma imagem capaz de executar sem erros. Lidar com a configuração do docker-compose, incluindo a orquestração dos serviços de aplicação e banco de dados, foi algo que só superamos após várias tentativas. Mesmo com a ajuda de IA, foi difícil entender o porquê de tantos problemas com variáveis de ambiente, dependências, comandos, entre outros.
 
