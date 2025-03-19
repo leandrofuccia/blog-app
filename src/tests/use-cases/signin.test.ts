@@ -1,6 +1,8 @@
 import {CredencialRepository } from "@/lib/typeorm/credencial.repository";
 import { SigninUseCase } from "@/use-cases/signin";
 import { ICredencial } from "@/entities/models/credencial.interface";
+import { InvalidCredentialsError } from "@/use-cases/errors/invalid-credentials-error";
+import { ZodNull } from "zod";
 
 jest.mock("@/lib/typeorm/credencial.repository");
 
@@ -30,4 +32,17 @@ describe("SigninUseCase", () => {
 
         expect(result?.username).toBe("teste@gmail.com");
     });
+
+
+    it("deve lançar InvalidCredentialsError se as credenciais não forem encontradas", async () => {
+            const username = ZodNull;             
+           
+            credencialRepositoryMock.findByUsername.mockImplementation = jest.fn().mockImplementation(() => {
+                return Promise.resolve(username);
+            });
+    
+            await expect(signinUseCase.handler("inexistente@gmail.com")).rejects.toThrow(InvalidCredentialsError);
+        });
+
+   
 });

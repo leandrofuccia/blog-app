@@ -17,9 +17,7 @@ const databaseHost =
     ? "localhost" // Define 'localhost' no ambiente de teste
     : env.DATABASE_HOST || (process.env.DOCKER_ENV ? "db" : "localhost");
 
-    console.log("envPath typeorm ", envPath);
-    console.log(" env.NODE_ENV typeorm",  env.NODE_ENV )
-
+   
 // Configuração do DataSource
 export const appDataSource = new DataSource({
   type: env.NODE_ENV === "test" ? "sqlite" : "postgres",
@@ -62,7 +60,7 @@ export async function closeDatabase(): Promise<void> {
     if (appDataSource.isInitialized) {
       await appDataSource.destroy();
       if (env.NODE_ENV !== "test") {
-        console.log("🔌 Database desconectado com sucesso.");
+        console.log("Database desconectado com sucesso.");
       }
     }
   } catch (error) {

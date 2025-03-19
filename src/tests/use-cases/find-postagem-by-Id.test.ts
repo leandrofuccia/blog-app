@@ -11,7 +11,6 @@ describe("FindPostagemByIdUseCase", () => {
 
     beforeEach(() => {
         postagemRepositoryMock = new PostagemRepository();
-        PostagemRepository.mockImplementation(() => postagemRepositoryMock);
         findPostagemByIdUseCase = new FindPostagemByIdUseCase(postagemRepositoryMock);
     });
 
