@@ -1,3 +1,4 @@
+/*
 -- Criar a tabela Perfil
 CREATE TABLE perfil (
     id SERIAL PRIMARY KEY,
@@ -49,3 +50,4 @@ SELECT * FROM perfil;
 SELECT * FROM credencial;
 SELECT * FROM usuario;
 SELECT * FROM postagem;
+*/
