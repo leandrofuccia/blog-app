@@ -28,7 +28,6 @@ describe('Create Credencial Controller', () => {
       handler: jest.fn().mockResolvedValue({
         id: 'newuser-id',
         username: 'newuser',
-        password: 'hashedpassword',
       }),
     });
 
@@ -47,7 +46,6 @@ describe('Create Credencial Controller', () => {
     expect(reply.send).toHaveBeenCalledWith({
       id: 'newuser-id',
       username: 'newuser',
-      password: 'hashedpassword',
     });
   });
 
