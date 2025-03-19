@@ -22,7 +22,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     console.log('Chamando função handler');
     const credencial = await createCredencialUseCase.handler(userWithHashedPassword)
 
-    return reply.status(201).send({id: credencial?.id, username: credencial?.username, password: credencial?.password})
+    return reply.status(201).send({id: credencial?.id, username: credencial?.username})
 }
 
 
