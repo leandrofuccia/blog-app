@@ -3,6 +3,7 @@ import { Postagem } from '@/entities/postagem.entity';
 import { Usuario } from '@/entities/usuario.entity';
 import { Credencial } from '@/entities/credencial.entity';
 import { appDataSource } from '@/lib/typeorm/typeorm';
+import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
 
 let postagemRepository: PostagemRepository;
 
@@ -89,7 +90,8 @@ describe('PostagemRepository', () => {
     expect(foundPost?.id).toBe(savedPost.id);
   });
 
-  console.log('deve encontrar postagens pelo usuário ID')
+
+   console.log('deve encontrar postagens pelo usuário ID')
   it('deve encontrar postagens pelo usuário ID', async () => {
     const newPost = {
       titulo: 'Título de Teste',
@@ -120,6 +122,23 @@ describe('PostagemRepository', () => {
     
     expect(updatedPost.titulo).toBe('Novo Título');
     expect(updatedPost.conteudo).toBe('Novo Conteúdo');
+  });
+
+
+  it("deve lançar um erro ao tentar atualizar uma postagem inexistente", async () => {
+    jest.spyOn(postagemRepository["repository"], "findOne").mockResolvedValue(null);
+  
+    await expect(postagemRepository.update(999, "Novo Título", "Novo Conteúdo"))
+      .rejects
+      .toThrow(ResourceNotFoundError);
+  });
+
+  it("deve retornar null quando a postagem não for encontrada", async () => {
+    jest.spyOn(postagemRepository["repository"], "findOne").mockResolvedValue(null);
+  
+    const postagem = await postagemRepository.findPostagemById(999);
+    
+    expect(postagem).toBeNull();
   });
 
  
@@ -223,6 +242,25 @@ describe('PostagemRepository', () => {
      
     expect(foundPost).toEqual([]);
   });
+
+
+  it("deve retornar todas as postagens quando palavrasChave for vazia", async () => {
+    jest.spyOn(postagemRepository["repository"], "createQueryBuilder").mockReturnValue({
+      where: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      getMany: jest.fn().mockResolvedValue([{ id: 1, titulo: "Título", conteudo: "Conteúdo" }]),
+    } as any);
+  
+    const postagens = await postagemRepository.findPostagemBySearch("", 1, 10);
+  
+    expect(postagens).toHaveLength(1);
+  });
+
+
+  
+  
+  
 
   
 

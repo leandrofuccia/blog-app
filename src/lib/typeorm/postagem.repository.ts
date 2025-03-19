@@ -10,10 +10,7 @@ import { IPostagemRepository } from "@/repositories/postagem.repository.interfac
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
 
 export class PostagemRepository implements IPostagemRepository{
-    static mockImplementation(arg0: () => IPostagemRepository) {
-        throw new Error("Method not implemented.");
-    }
-
+    
     private repository: Repository<Postagem>
    
     constructor(){

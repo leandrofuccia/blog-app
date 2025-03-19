@@ -1,5 +1,6 @@
 import { PostagemRepository } from "@/lib/typeorm/postagem.repository";
 import { IPostagemRepository } from "@/repositories/postagem.repository.interface";
+import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
 import { FindPostagemBySearchUseCase } from "@/use-cases/find-postagem-by-search";
 
 jest.mock("@/lib/typeorm/postagem.repository");
@@ -10,7 +11,7 @@ describe("FindPostagemUseCase", () => {
 
     beforeEach(() => {
         postagemRepositoryMock = new PostagemRepository();
-        PostagemRepository.mockImplementation(() => postagemRepositoryMock);
+        
         findPostagemSearchUseCase = new FindPostagemBySearchUseCase(postagemRepositoryMock);
     });
 
@@ -43,4 +44,17 @@ describe("FindPostagemUseCase", () => {
         expect(result.length).toBe(1);
         expect(result[0].conteudo).toBe("Conteúdo único");
     });
+
+    it("deve lançar ResourceNotFoundError se não encontrar postagens", async () => {
+        const postagens: any[] = []; // Nenhuma postagem encontrada.
+        
+        // Simula a implementação do método `findPostagemBySearch` para retornar um array vazio.
+        postagemRepositoryMock.findPostagemBySearch = jest.fn().mockImplementation(() => {
+            return Promise.resolve(postagens); // Retorna um array vazio
+        });
+    
+        // Espera que o erro seja lançado
+        await expect(findPostagemSearchUseCase.handler("não existe", 1, 2)).rejects.toThrow(ResourceNotFoundError);
+    });
+    
 });
