@@ -29,7 +29,8 @@ export const appDataSource = new DataSource({
   database: env.NODE_ENV === "test" ? ":memory:" : env.DATABASE_NAME || "blogdb",
   entities: [Perfil, Usuario, Postagem, Credencial],
   logging: env.NODE_ENV === "development",
-  synchronize: env.NODE_ENV !== "production", // Evita mudanças no banco em produção automaticamente
+  synchronize: env.NODE_ENV !== "production",
+  migrations: ["src/migrations/*.ts"],
 });
 
 // Função para inicializar o banco de dados
