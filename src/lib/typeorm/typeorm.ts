@@ -57,7 +57,10 @@ export async function initializeDatabase(): Promise<void> {
       console.log("Database conectado com sucesso!");
     }
 
-    await seedPerfilTableOrm();
+    if (env.NODE_ENV !== "test") {
+      console.log("Database conectado com sucesso!");
+      await seedPerfilTableOrm(); 
+    }
 
   } catch (error) {
     console.error("Erro ao conectar ao banco de dados:", error);
