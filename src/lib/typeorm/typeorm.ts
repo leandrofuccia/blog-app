@@ -5,6 +5,7 @@ import { Postagem } from "@/entities/postagem.entity";
 import { Credencial } from "@/entities/credencial.entity";
 import path from "path";
 import dotenv from "dotenv";
+import { Perfil } from "@/entities/perfil.entity";
 
 // Determina o caminho do arquivo .env com base no NODE_ENV
 const envFilePath = process.env.NODE_ENV === "test" ? ".env.test" : ".env";
@@ -26,7 +27,7 @@ export const appDataSource = new DataSource({
   username: env.NODE_ENV === "test" ? undefined : env.DATABASE_USER || "blogdb",
   password: env.NODE_ENV === "test" ? undefined : env.DATABASE_PASSWORD || "sua_senha_segura",
   database: env.NODE_ENV === "test" ? ":memory:" : env.DATABASE_NAME || "blogdb",
-  entities: [Usuario, Postagem, Credencial],
+  entities: [Perfil, Usuario, Postagem, Credencial],
   logging: env.NODE_ENV === "development",
   synchronize: env.NODE_ENV !== "production", // Evita mudanças no banco em produção automaticamente
 });
