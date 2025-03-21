@@ -4,7 +4,7 @@ declare module 'fastify' {
   interface FastifyRequest {
     user: {
       username: string;
-      usuarioId: number;
+      credencialId: number;
     };
   }
 }

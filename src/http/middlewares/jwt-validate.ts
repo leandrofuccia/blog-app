@@ -23,16 +23,13 @@ export async function validateJwt(
         
         const validateRoute = `${request.method}-${request.url}` // Remove o espaço ao redor do hífen
 
-        console.log(validateRoute)
-        
         if (routeFreeList.includes(validateRoute)) return
 
         await request.jwtVerify ()
 
-        // Decodificar e validar o token JWT
         const decoded = await request.jwtVerify();
-        request.user = decoded as { username: string; usuarioId: number };
-        
+        request.user = decoded as { username: string; credencialId: number };
+                
     } catch (error) {
         reply.status(401).send({ message: 'Unauthorized' });
     }

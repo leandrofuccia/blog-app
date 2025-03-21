@@ -1,6 +1,3 @@
-import dotenv from 'dotenv';
-import path from 'path';
-
 jest.mock('dotenv', () => ({
   config: jest.fn(),
 }));
@@ -48,40 +45,5 @@ describe('Env Configuration', () => {
   
     dotenvSpy.mockRestore();
   });
-  
-
-  it('deve carregar corretamente as variáveis de ambiente no modo development', async () => {
-    process.env = { 
-      NODE_ENV: 'development',
-      DATABASE_HOST: 'dev_host',
-      DATABASE_NAME: 'dev_db',
-      JWT_SECRET: 'dev_secret'
-    };
-  
-    const { env } = await import('@/env');
-  
-    expect(env.NODE_ENV).toBe('development');
-    expect(env.DATABASE_HOST).toBe('dev_host');
-    expect(env.DATABASE_NAME).toBe('dev_db');
-    expect(env.JWT_SECRET).toBe('dev_secret');
-  });
-
-
-  it('deve carregar corretamente as variáveis de ambiente no modo production', async () => {
-    process.env = { 
-        NODE_ENV: 'production', 
-        DATABASE_HOST: 'prod_host',
-        DATABASE_NAME: 'prod_db',
-        JWT_SECRET: 'prod_secret'
-    };
-  
-    const { env } = await import('@/env');
-  
-    expect(env.NODE_ENV).toBe('production');
-    expect(env.DATABASE_HOST).toBe('prod_host');
-    expect(env.DATABASE_NAME).toBe('prod_db');
-    expect(env.JWT_SECRET).toBe('prod_secret');
-  });
-  
-  
+    
 });

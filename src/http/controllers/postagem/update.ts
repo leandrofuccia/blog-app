@@ -1,5 +1,6 @@
+import { InvalidUsuarioError } from "@/use-cases/errors/invalid-usuario-error";
 import { unauthorizedPerfilError } from "@/use-cases/errors/unauthorized-perfil-error";
-import { makeFindUsuarioByIdUseCase } from "@/use-cases/factory/make-find-usuario-by-Id";
+import { makeFindUsuarioByCredencialUseCase } from "@/use-cases/factory/make-find-usuario-by-credencial";
 import { makeUpdatePostagemUseCase } from "@/use-cases/factory/make-update-postagem-use-case";
 import { FastifyReply, FastifyRequest } from "fastify"
 import { number, z } from "zod"
@@ -17,29 +18,26 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
     })
 
     const { id } = registreParamSchema.parse(request.params)
-
     const {titulo, conteudo} = registrerBodySchema.parse(request.body)
-
-    const { username, usuarioId } = request.user as { username: string; usuarioId: number };
-
-    const findByUserIdUseCase = makeFindUsuarioByIdUseCase()  
-    const usuario = await findByUserIdUseCase.handler(usuarioId)
-    console.log("Perfil ",  usuario.perfilid)    
-    if (usuario.perfilid !== 2) {
+    const { username, credencialId } = request.user as { username: string; credencialId: number };
+    const findUsuarioByCredencialIdUseCase = makeFindUsuarioByCredencialUseCase()
+    const usuario = await findUsuarioByCredencialIdUseCase.handler(credencialId)
+        
+    if (!usuario || (usuario).length === 0){
+        throw new InvalidUsuarioError()
+    } 
+        
+    console.log("Perfil ",  usuario[0].perfilid)    
+    if (usuario[0].perfilid !== 2) {
         throw new unauthorizedPerfilError()
     }
 
-    console.log('Chamando função update postagem');
-        
+    console.log('Chamando função update postagem')   
     const updatePostagemUseCase = makeUpdatePostagemUseCase()
-    
     const postagem = await updatePostagemUseCase.handler(
         id,
         titulo,
         conteudo
-    )
-    
+    )    
     reply.code(200).send(postagem)
-    
-
-}
+ }

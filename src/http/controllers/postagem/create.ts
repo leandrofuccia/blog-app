@@ -1,6 +1,7 @@
+import { InvalidUsuarioError } from "@/use-cases/errors/invalid-usuario-error";
 import { unauthorizedPerfilError } from "@/use-cases/errors/unauthorized-perfil-error";
 import { makeCreatePostagemUseCase } from "@/use-cases/factory/make-create-postagem-use-case";
-import { makeFindUsuarioByIdUseCase } from "@/use-cases/factory/make-find-usuario-by-Id";
+import { makeFindUsuarioByCredencialUseCase } from "@/use-cases/factory/make-find-usuario-by-credencial";
 import { FastifyReply, FastifyRequest } from "fastify"
 
 import { z } from "zod"
@@ -14,28 +15,23 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
         
     })
 
-    const { username, usuarioId } = request.user as { username: string; usuarioId: number };
-
-    const findByUserIdUseCase = makeFindUsuarioByIdUseCase()  
-    const usuario = await findByUserIdUseCase.handler(usuarioId)
+    const { username, credencialId } = request.user as { username: string; credencialId: number };
+    const findUsuarioByCredencialIdUseCase = makeFindUsuarioByCredencialUseCase()
+    const usuario = await findUsuarioByCredencialIdUseCase.handler(credencialId)
     
-    console.log("Perfil ",  usuario.perfilid)    
-    if (usuario.perfilid !== 2) {
+    if (!usuario || (usuario).length === 0){
+        throw new InvalidUsuarioError()
+    } 
+   
+    if (usuario[0].perfilid !== 2) {
         throw new unauthorizedPerfilError()
     }
-
-
-    const {titulo, conteudo, usuarioid} = registrerBodySchema.parse(request.body)
-    
-    
-  
-    console.log('Chamando função create');
-        
+ 
+    const {titulo, conteudo, usuarioid} = registrerBodySchema.parse(request.body)   
+    console.log('Chamando função create');        
     const createPostagemUseCase = makeCreatePostagemUseCase();
     console.log('Chamando função handler');
-    const postagem = await createPostagemUseCase.handler({titulo, conteudo, usuarioid})
-
-         
+    const postagem = await createPostagemUseCase.handler({titulo, conteudo, usuarioid})     
     reply.code(201).send(postagem)
     
 }

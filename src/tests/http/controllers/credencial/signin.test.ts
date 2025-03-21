@@ -23,12 +23,14 @@ describe('Signin Controller', () => {
   let mockFindUsuarioByCredencialUseCase: jest.Mock;
 
   beforeEach(() => {
+    // Mock do caso de uso de login
     mockSigninUseCase = jest.fn().mockResolvedValue({
       id: 1,
       username: 'testuser',
       password: 'hashedpassword',
     });
 
+    // Mock do caso de uso de busca pelo credencial
     mockFindUsuarioByCredencialUseCase = jest.fn().mockResolvedValue([{ id: 1 }]);
 
     (makeSigninUseCase as jest.Mock).mockReturnValue({ handler: mockSigninUseCase });
@@ -36,6 +38,7 @@ describe('Signin Controller', () => {
       handler: mockFindUsuarioByCredencialUseCase,
     });
 
+    // Mock da comparação de senha
     (compare as jest.Mock).mockResolvedValue(true);
 
     request = {
@@ -57,15 +60,23 @@ describe('Signin Controller', () => {
 
     expect(mockSigninUseCase).toHaveBeenCalledWith('testuser');
     expect(compare).toHaveBeenCalledWith('password123', 'hashedpassword');
-    expect(mockFindUsuarioByCredencialUseCase).toHaveBeenCalledWith(1);
-    expect(reply.jwtSign).toHaveBeenCalledWith({ username: 'testuser', usuarioId: 1 });
+    expect(reply.jwtSign).toHaveBeenCalledWith({ username: 'testuser', credencialId: 1 });
     expect(reply.status).toHaveBeenCalledWith(200);
     expect(reply.send).toHaveBeenCalledWith({ token: 'fake-jwt-token' });
   });
 
-  it('deve retornar erro para credenciais inválidas', async () => {
-    (compare as jest.Mock).mockResolvedValue(false);
+  it('deve retornar erro para credenciais inválidas quando a senha não for correspondente', async () => {
+    (compare as jest.Mock).mockResolvedValue(false); // Senha não confere
 
     await expect(signin(request, reply)).rejects.toThrow(InvalidCredentialsError);
+
+    expect(mockSigninUseCase).toHaveBeenCalledWith('testuser');
+    expect(compare).toHaveBeenCalledWith('password123', 'hashedpassword');
+    expect(reply.jwtSign).not.toHaveBeenCalled();
+    expect(reply.status).not.toHaveBeenCalled();
+    expect(reply.send).not.toHaveBeenCalled();
   });
+ 
+
+  
 });
