@@ -3,7 +3,7 @@ import { IPerfil } from "./models/perfil.interface";
 
 @Entity({ name: 'perfil' })
 export class Perfil implements IPerfil {
-    @PrimaryColumn()
+    @PrimaryColumn({ type: "integer" })
     id?: number;
 
     @Column({ name: 'perfil', type: 'varchar', unique: true })
