@@ -10,6 +10,10 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
+COPY ./wait-for-it.sh /usr/src/app/wait-for-it.sh
+
+RUN chmod +x /usr/src/app/wait-for-it.sh
+
 RUN npm run build
 
 EXPOSE 3002
