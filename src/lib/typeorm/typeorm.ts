@@ -6,6 +6,8 @@ import { Credencial } from "@/entities/credencial.entity";
 import path from "path";
 import dotenv from "dotenv";
 import { Perfil } from "@/entities/perfil.entity";
+import { seedPerfilTableOrm } from "@/lib/typeorm/seedPerfilTableOrm";
+
 
 // Determina o caminho do arquivo .env com base no NODE_ENV
 const envFilePath = process.env.NODE_ENV === "test" ? ".env.test" : ".env";
@@ -30,11 +32,11 @@ export const appDataSource = new DataSource({
   entities: [Perfil, Usuario, Postagem, Credencial],
   logging: env.NODE_ENV === "development",
   synchronize: env.NODE_ENV !== "production",
-  migrations: process.env.DOCKER_ENV === "true"
+  /*migrations: process.env.DOCKER_ENV === "true"
   ? ["build/migrations/*.cjs"]   // Usa os arquivos JS compilados quando a variável DOCKER_ENV estiver definida como true
   : env.NODE_ENV !== "test"
     ? ["src/migrations/*.ts"]     // Em desenvolvimento normal, usa os arquivos TS
-    : [],
+    : [],*/
 });
 
 // Função para inicializar o banco de dados
@@ -54,6 +56,9 @@ export async function initializeDatabase(): Promise<void> {
     if (env.NODE_ENV !== "test") {
       console.log("Database conectado com sucesso!");
     }
+
+    await seedPerfilTableOrm();
+
   } catch (error) {
     console.error("Erro ao conectar ao banco de dados:", error);
     throw error;
