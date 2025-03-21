@@ -15,6 +15,7 @@ export class Credencial implements ICredencial {
     @Column({
       name: 'username',
       type: 'varchar',
+      unique: true,
     })
     username: string;
 
