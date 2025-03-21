@@ -8,6 +8,7 @@ services:
       - "3002:3002"
     environment:
       NODE_ENV: development
+      DOCKER_ENV: true
       DATABASE_USER: blogdb
       DATABASE_HOST: db
       DATABASE_NAME: blogdb

@@ -30,11 +30,11 @@ export const appDataSource = new DataSource({
   entities: [Perfil, Usuario, Postagem, Credencial],
   logging: env.NODE_ENV === "development",
   synchronize: env.NODE_ENV !== "production",
-  migrations: env.NODE_ENV === "production"
-  ? ["build/migrations/*.js"]   
+  migrations: process.env.DOCKER_ENV === "true"
+  ? ["build/migrations/*.js"]   // Usa os arquivos JS compilados quando a variável DOCKER_ENV estiver definida como true
   : env.NODE_ENV !== "test"
-  ? ["src/migrations/*.ts"]       
-  : [],       
+    ? ["src/migrations/*.ts"]     // Em desenvolvimento normal, usa os arquivos TS
+    : [],
 });
 
 // Função para inicializar o banco de dados
