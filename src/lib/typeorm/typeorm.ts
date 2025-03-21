@@ -30,7 +30,11 @@ export const appDataSource = new DataSource({
   entities: [Perfil, Usuario, Postagem, Credencial],
   logging: env.NODE_ENV === "development",
   synchronize: env.NODE_ENV !== "production",
-  migrations: env.NODE_ENV !== "test" ? ["src/migrations/*.ts"] : [],
+  migrations: env.NODE_ENV === "production"
+  ? ["build/migrations/*.js"]   
+  : env.NODE_ENV !== "test"
+  ? ["src/migrations/*.ts"]       
+  : [],       
 });
 
 // Função para inicializar o banco de dados
