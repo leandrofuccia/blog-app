@@ -9,7 +9,9 @@
     "build": "tsup src --out-dir build",
     "test": "cross-env NODE_ENV=test jest --runInBand --coverage",
     "test:watch": "jest --watch",
-    "dev": "nodemon --legacy-watch app.ts"
+    "dev": "nodemon --legacy-watch app.ts",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "typeorm:migration:run": "npm run typeorm migration:run"
   },
   "dependencies": {
     "@fastify/jwt": "9.0.4",
