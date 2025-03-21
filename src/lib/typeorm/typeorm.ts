@@ -31,7 +31,7 @@ export const appDataSource = new DataSource({
   logging: env.NODE_ENV === "development",
   synchronize: env.NODE_ENV !== "production",
   migrations: process.env.DOCKER_ENV === "true"
-  ? ["build/migrations/*.js"]   // Usa os arquivos JS compilados quando a variável DOCKER_ENV estiver definida como true
+  ? ["build/migrations/*.cjs"]   // Usa os arquivos JS compilados quando a variável DOCKER_ENV estiver definida como true
   : env.NODE_ENV !== "test"
     ? ["src/migrations/*.ts"]     // Em desenvolvimento normal, usa os arquivos TS
     : [],
