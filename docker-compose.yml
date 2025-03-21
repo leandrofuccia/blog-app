@@ -16,7 +16,7 @@ services:
       JWT_SECRET: sua_chave_secreta
     depends_on:
       - db
-    command: "node build/server.cjs"
+    command: "bash ./wait-for-it.sh db:5432 -- node build/server.cjs"
     networks:
       - app-network
 
