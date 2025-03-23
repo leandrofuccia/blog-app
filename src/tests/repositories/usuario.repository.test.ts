@@ -1,4 +1,5 @@
 import { Credencial } from "@/entities/credencial.entity";
+import { Perfil } from "@/entities/perfil.entity";
 import { Usuario } from "@/entities/usuario.entity";
 import { appDataSource } from "@/lib/typeorm/typeorm";
 import { UsuarioRepository } from "@/lib/typeorm/usuario.repository";
@@ -10,7 +11,7 @@ beforeAll(async () => {
     type: 'sqlite',
     database: ':memory:',
     dropSchema: true,
-    entities: [Credencial, Usuario], 
+    entities: [Credencial, Usuario, Perfil], 
     synchronize: false,
     logging: false,
   });
@@ -24,6 +25,7 @@ beforeEach(async () => {
   await queryRunner.query('PRAGMA foreign_keys=OFF');
   await queryRunner.query('DROP TABLE IF EXISTS credencial');
   await queryRunner.query('DROP TABLE IF EXISTS usuario');
+  await queryRunner.query('DROP TABLE IF EXISTS perfil');
   await queryRunner.query('PRAGMA foreign_keys=ON');
   await appDataSource.synchronize(true);
 });
@@ -34,6 +36,13 @@ afterAll(async () => {
 
 describe('UsuarioRepository', () => {
   it('deve criar um usuário', async () => {
+
+    const perfilRepository = appDataSource.getRepository(Perfil);
+      const perfil = await perfilRepository.save({
+      id: 2,
+      perfil: "Professor",
+    });
+
     const credencial = await appDataSource.getRepository(Credencial).save({
       username: 'testuser',
       password: 'securepassword',
@@ -41,7 +50,7 @@ describe('UsuarioRepository', () => {
 
     const newUsuario = {
       nome: 'Test User',
-      perfilid: 2,
+      perfilid: perfil?.id,
       credencialId: credencial.id,
     };
 
@@ -54,6 +63,14 @@ describe('UsuarioRepository', () => {
 
 
   it('deve encontrar um usuário pelo ID', async () => {
+  
+    const perfilRepository = appDataSource.getRepository(Perfil);
+      const perfil = await perfilRepository.save({
+      id: 2,
+      perfil: "Professor",
+    });
+
+    
     const credencial = await appDataSource.getRepository(Credencial).save({
       username: 'testuser',
       password: 'securepassword',
@@ -61,7 +78,7 @@ describe('UsuarioRepository', () => {
 
     const newUsuario = {
       nome: 'Test User',
-      perfilid: 2,
+      perfilid: perfil?.id,
       credencialId: credencial.id,
     };
 
@@ -79,6 +96,13 @@ describe('UsuarioRepository', () => {
   
 
   it('deve encontrar usuário por credencial ID', async () => {
+    
+    const perfilRepository = appDataSource.getRepository(Perfil);
+      const perfil = await perfilRepository.save({
+      id: 2,
+      perfil: "Professor",
+    });
+    
     const credencial = await appDataSource.getRepository(Credencial).save({
       username: 'testuser',
       password: 'securepassword',
@@ -86,7 +110,7 @@ describe('UsuarioRepository', () => {
 
     const newUsuario = {
       nome: 'Test User',
-      perfilid: 2,
+      perfilid: perfil?.id,
       credencialId: credencial.id,
     };
 
@@ -99,6 +123,13 @@ describe('UsuarioRepository', () => {
   });
 
   it('deve encontrar um usuário pelo nome', async () => {
+    
+    const perfilRepository = appDataSource.getRepository(Perfil);
+      const perfil = await perfilRepository.save({
+      id: 2,
+      perfil: "Professor",
+    });
+    
     const credencial = await appDataSource.getRepository(Credencial).save({
       username: 'testuser',
       password: 'securepassword',
@@ -106,7 +137,7 @@ describe('UsuarioRepository', () => {
   
     const newUsuario = {
       nome: 'Test User',
-      perfilid: 2,
+      perfilid: perfil?.id,
       credencialId: credencial.id,
     };
   
@@ -134,11 +165,18 @@ describe('UsuarioRepository', () => {
   it('deve verificar se NODE_ENV afeta a criação de datas', async () => {
     process.env.NODE_ENV = 'test';
   
+    let perfilRepository = appDataSource.getRepository(Perfil);
+      const perfilTest = await perfilRepository.save({
+      id: 2,
+      perfil: "Professor",
+    });
+    
     const credencialTest = await appDataSource.getRepository(Credencial).save({
       username: 'testuser',
       password: 'securepassword',
     });
-    const usuarioTest = new Usuario('Test User', 2);
+
+    const usuarioTest = new Usuario('Test User', perfilTest?.id);
     usuarioTest.credencialId = credencialTest.id;
     await appDataSource.getRepository(Usuario).save(usuarioTest);
   
@@ -146,12 +184,18 @@ describe('UsuarioRepository', () => {
     expect(typeof usuarioTest.ultimologin).toBe('string');
   
     process.env.NODE_ENV = 'production';
+
+    perfilRepository = appDataSource.getRepository(Perfil);
+    const perfilProd = await perfilRepository.save({
+      id: 1,
+      perfil: "Aluno",
+    });
   
      const credencialProd = await appDataSource.getRepository(Credencial).save({
       username: 'produser',
       password: 'securepassword',
     });
-    const usuarioProd = new Usuario('Prod User', 3);
+    const usuarioProd = new Usuario('Prod User', perfilProd?.id);
     usuarioProd.credencialId = credencialProd.id;
     await appDataSource.getRepository(Usuario).save(usuarioProd);
   

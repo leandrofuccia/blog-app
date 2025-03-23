@@ -51,7 +51,7 @@ app.register(fastifySwaggerUi, {
 
 app.register(fastifyJwt, {
     secret: env.JWT_SECRET,
-    sign: {expiresIn: '10m'},
+    sign: {expiresIn: '1440m'},
 })
 
 app.addHook('onRequest', validateJwt)

@@ -1,7 +1,8 @@
 import { IUsuario } from "./models/usuario.interface"
-import {Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
+import {Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Postagem } from "./postagem.entity"
 import { Credencial } from "./credencial.entity"
+import { Perfil } from "./perfil.entity"
 
 @Entity({
   name: 'usuario',
@@ -50,6 +51,10 @@ export class Usuario implements IUsuario {
     @OneToOne(() => Credencial, credencial => credencial.usuario)
     @JoinColumn({ name: 'credencialid' })
     credencial?: Credencial;
+
+    @ManyToOne(() => Perfil, perfil => perfil.id)
+    @JoinColumn({ name: 'perfilid' })
+    usuarios: Usuario[];
 
     @JoinTable({
       name: 'postagem',
