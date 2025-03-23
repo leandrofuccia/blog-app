@@ -6,6 +6,8 @@ import { IPostagem } from "@/entities/models/postagem.interface";
 import { IUsuario } from "@/entities/models/usuario.interface";
 import { IPostagemRepository } from "@/repositories/postagem.repository.interface";
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
+import { timeStamp } from "node:console";
+import { date } from "zod";
 
 export class PostagemRepository implements IPostagemRepository{
     
@@ -51,6 +53,7 @@ export class PostagemRepository implements IPostagemRepository{
         
         postagem.titulo = titulo;
         postagem.conteudo = conteudo;
+        postagem.dataatualizacao = new Date();
        
         return this.repository.save(postagem);
     }

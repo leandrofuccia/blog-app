@@ -28,7 +28,8 @@ export async function deletePostagem(
     }
 
     const deletePostagemUseCase = makeDeletePostagemUseCase()
-    await deletePostagemUseCase.handler(id)   
-    return reply.code(204).send();
+    await deletePostagemUseCase.handler(id);
+    let mensagem = "OK"
+    return reply.code(200).send({ message: mensagem });
     
 }

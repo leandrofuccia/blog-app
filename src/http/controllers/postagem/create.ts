@@ -27,7 +27,9 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     }
  
     const {titulo, conteudo, usuarioid} = registrerBodySchema.parse(request.body)   
+
     const createPostagemUseCase = makeCreatePostagemUseCase();
+  
     const postagem = await createPostagemUseCase.handler({titulo, conteudo, usuarioid})     
     reply.code(201).send(postagem)
     

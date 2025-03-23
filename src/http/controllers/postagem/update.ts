@@ -34,7 +34,8 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
     const postagem = await updatePostagemUseCase.handler(
         id,
         titulo,
-        conteudo
+        conteudo,
+        
     )    
     reply.code(200).send(postagem)
  }
