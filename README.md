@@ -25,7 +25,7 @@ A aplicação possui 2 perfis de uso (Professor e Aluno), com autenticação. As
   - **POST /posts -** Permite criar um novo post (dados enviados no corpo da requisição).
   - **PUT /posts/:id -** Permite atualizar um post existente.
   - **DELETE /posts/:id -** Remove um post específico.
-  - **GET /posts/search -** Permite busca de posts por palavras-chave.
+  - **GET /posts/search/:termo -** Permite busca de posts por palavras-chave.
 - **Segurança:** Middleware para autenticação (JSON Web Token - JWT).
 
 #### 2. **Camada de Persistência (Banco de Dados):**
@@ -38,8 +38,8 @@ Estrutura:
 
 ```sql
 CREATE TABLE perfil (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL
+    id int4 PRIMARY KEY,
+    perfil varchar NOT NULL UNIQUE
 );
 ```
 
@@ -49,9 +49,9 @@ Estrutura:
 
 ```sql
 CREATE TABLE credencial (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
+    id serial4 PRIMARY KEY,
+    username varchar NOT NULL UNIQUE,
+    password varchar NOT NULL
 );
 ```
 
@@ -61,12 +61,12 @@ Estrutura:
 
 ```sql
 CREATE TABLE usuario (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    perfilid INT NOT NULL,
-    datacriacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ultimologin TIMESTAMP,
-    credencialid INT,
+    id serial4 PRIMARY KEY,
+    nome varchar NOT NULL,
+    perfilid int4 NOT NULL,
+    datacriacao timestamp DEFAULT CURRENT_TIMESTAMP,
+    ultimologin timestamp,
+    credencialid int4 NOT NULL UNIQUE,
     FOREIGN KEY (perfilid) REFERENCES perfil(id),
     FOREIGN KEY (credencialid) REFERENCES credencial(id)
 );
@@ -78,12 +78,12 @@ Estrutura:
 
 ```sql
 CREATE TABLE postagem (
-    id SERIAL PRIMARY KEY,
-    titulo VARCHAR(150) NOT NULL,
-    conteudo TEXT NOT NULL,
-    usuarioid INT NOT NULL,
-    datacriacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    dataatualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id serial4 PRIMARY KEY,
+    titulo varchar NOT NULL,
+    conteudo varchar NOT NULL,
+    usuarioid int4 NOT NULL,
+    datacriacao timestamp DEFAULT CURRENT_TIMESTAMP,
+    dataatualizacao timestamp DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuarioid) REFERENCES usuario(id)
 );
 ```
@@ -185,8 +185,6 @@ Para parar e remover os contêineres, execute:
 docker compose down
 ```
 
-> Isso também removerá os volumes temporários utilizados pelo banco de dados.
-
 ---
 
 ## Guia de Uso das APIs
@@ -206,7 +204,7 @@ Este guia tem como objetivo orientar o uso das APIs disponibilizadas pelo sistem
 
 #### 1. **Criar uma Credencial**
 
-Antes de criar um usuário, é necessário criar uma credencial (e-mail e senha).
+Para utilizar o sistema, é necessário criar uma credencial (e-mail e senha).
 
 - **Endpoint:** `POST /credencial`
 - **Descrição:** Cria uma credencial com e-mail e senha.
@@ -220,12 +218,43 @@ Antes de criar um usuário, é necessário criar uma credencial (e-mail e senha)
 - **Resposta de Sucesso (201):**
   ```json
   {
-    "id": 2,
+    "id": 1,
     "username": "seuemail@dominio.com"
   }
   ```
 
-#### 2. **Criar um Usuário**
+#### 2. Login (Autenticação)
+
+Para utilizar os demais endpoints, é necessário se autenticar utilizando a credencial criada.
+
+**Endpoint:**
+
+```
+POST /credencial/signin
+```
+
+**Corpo da requisição:**
+
+```json
+{
+  "username": "seuemail@dominio.com",
+  "password": "suaSenha123"
+}
+```
+
+**Resposta esperada:**
+
+```json
+{
+  "token": "<seu_token_aqui>"
+}
+```
+
+Se está utilizando o Swagger UI, pode-se clicar em "Authorize", inserir o token no campo value e clicar em "Authorize". De agora em diante, o Swagger UI irá alimentar o cabeçalho de todas as requisições com o Bearer token.
+
+#### 3. **Criar um Usuário**
+
+Para utilizar os demais endpoints, é necessário criar um Usuário e definir seu Perfil.
 
 - **Endpoint:** `POST /usuario`
 - **Descrição:** Cria um usuário associado à credencial criada anteriormente.
@@ -243,42 +272,16 @@ Antes de criar um usuário, é necessário criar uma credencial (e-mail e senha)
     - `1`: Aluno
     - `2`: Professor
   - **credencialId:** ID retornado da criação de credencial.
-- **Resposta de Sucesso (200):**
+- **Resposta de Sucesso (201):**
 
   ```json
   {
-    "token": "tokenDeAutenticacao"
+    "id": 1,
+    "nome": "Seu Nome",
+    "perfilid": 2,
+    "credencialId": 1
   }
   ```
-
-#### 3. Login (Autenticação)
-
-Para acessar postagens ou gerenciá-las, o usuário precisa se autenticar.
-
-**Endpoint:**
-
-```
-POST /credencial/signin
-```
-
-**Corpo da requisição:**
-
-```json
-{
-  "username": "usuario@email.com",
-  "password": "1234"
-}
-```
-
-**Resposta esperada:**
-
-```json
-{
-  "token": "<seu_token_aqui>"
-}
-```
-
-⚠️ Guarde o token, pois ele será necessário para acessar os demais endpoints.
 
 #### 4. **Criar uma Postagem (Apenas Professores)**
 
@@ -295,11 +298,16 @@ POST /credencial/signin
   ```
 
   - **usuarioid:** ID do usuário professor.
-- **Resposta de Sucesso (200):**
+- **Resposta de Sucesso (201):**
 
   ```json
   {
-    "token": "tokenDeAutenticacao"
+    "titulo": "Título da Postagem",
+    "conteudo": "Conteúdo da postagem",
+    "usuarioid": 1,
+    "id": 1,
+    "datacriacao": "2025-03-17T17:40:00.127Z",
+    "dataatualizacao": "2025-03-17T17:40:00.127Z"
   }
   ```
 
@@ -311,12 +319,12 @@ POST /credencial/signin
   ```json
   [
     {
-      "id": 1,
-      "titulo": "Primeira Postagem",
-      "conteudo": "Conteúdo",
+      "titulo": "Título da Postagem",
+      "conteudo": "Conteúdo da postagem",
       "usuarioid": 1,
-      "datacriacao": "2025-03-16T00:00:00.000Z",
-      "dataatualizacao": "2025-03-16T00:00:00.000Z"
+      "id": 1,
+      "datacriacao": "2025-03-17T17:40:00.127Z",
+      "dataatualizacao": "2025-03-17T17:40:00.127Z"
     }
   ]
   ```
@@ -325,15 +333,17 @@ POST /credencial/signin
 
 - **Endpoint:** `GET /posts/:id`
 - **Descrição:** Retorna uma postagem específica pelo ID.
+- **Parâmetros:**
+  - **id:** id da postagem a ser retornada
 - **Resposta de Sucesso (200):**
   ```json
   {
-    "id": 1,
-    "titulo": "Primeira Postagem",
-    "conteudo": "Conteúdo",
+    "titulo": "Título da Postagem",
+    "conteudo": "Conteúdo da postagem",
     "usuarioid": 1,
-    "datacriacao": "2025-03-16T00:00:00.000Z",
-    "dataatualizacao": "2025-03-16T00:00:00.000Z"
+    "id": 1,
+    "datacriacao": "2025-03-17T17:40:00.127Z",
+    "dataatualizacao": "2025-03-17T17:40:00.127Z"
   }
   ```
 
@@ -341,12 +351,13 @@ POST /credencial/signin
 
 - **Endpoint:** `PUT /posts/:id`
 - **Descrição:** Atualiza uma postagem existente.
+- **Parâmetros:**
+  - **id:** id da postagem a ser editada
 - **Corpo da Requisição (JSON):**
   ```json
   {
     "titulo": "Novo Título",
-    "conteudo": "Novo Conteúdo",
-    "usuarioid": 1
+    "conteudo": "Novo Conteúdo"
   }
   ```
 - **Resposta de Sucesso (200):**
@@ -356,8 +367,8 @@ POST /credencial/signin
     "titulo": "Novo Título",
     "conteudo": "Novo Conteúdo",
     "usuarioid": 1,
-    "datacriacao": "2025-03-16T00:00:00.000Z",
-    "dataatualizacao": "2025-03-16T01:00:00.000Z"
+    "datacriacao": "2025-03-17T17:40:00.127Z",
+    "dataatualizacao": "2025-03-17T17:50:00.140Z"
   }
   ```
 
@@ -365,10 +376,12 @@ POST /credencial/signin
 
 - **Endpoint:** `DELETE /posts/:id`
 - **Descrição:** Remove uma postagem específica.
+- **Parâmetros:**
+  - **id:** id da postagem a ser excluída
 - **Resposta de Sucesso (200):**
   ```json
   {
-    "message": "Postagem excluída com sucesso"
+    "message": "OK"
   }
   ```
 
@@ -376,16 +389,18 @@ POST /credencial/signin
 
 - **Endpoint:** `GET /posts/search/:termo`
 - **Descrição:** Busca postagens que contenham o termo no título ou conteúdo.
+- **Parâmetros:**
+  - **termo:** termo a ser pesquisado no título ou conteúdo de uma ou mais postagens.
 - **Resposta de Sucesso (200):**
   ```json
   [
     {
       "id": 1,
-      "titulo": "Postagem sobre Tecnologia",
-      "conteudo": "Conteúdo relacionado à tecnologia...",
+      "titulo": "Novo Título",
+      "conteudo": "Novo Conteúdo",
       "usuarioid": 1,
-      "datacriacao": "2025-03-16T00:00:00.000Z",
-      "dataatualizacao": "2025-03-16T00:00:00.000Z"
+      "datacriacao": "2025-03-17T17:40:00.127Z",
+      "dataatualizacao": "2025-03-17T17:50:00.140Z"
     }
   ]
   ```
