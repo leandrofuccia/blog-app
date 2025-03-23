@@ -14,7 +14,7 @@ jest.mock('@/use-cases/factory/make-find-usuario-by-credencial', () => ({
 }));
 
 describe('Delete Postagem Controller', () => {
-  it('deve excluir uma postagem e retornar 204 quando o usuário tem perfil permitido', async () => {
+  it('deve excluir uma postagem e retornar 200 quando o usuário tem perfil permitido', async () => {
     const mockFindByCredencialId = jest.fn().mockResolvedValue([{ id: 1, perfilid: 2 }]);
     (makeFindUsuarioByCredencialUseCase as jest.Mock).mockReturnValue({ handler: mockFindByCredencialId });
 
@@ -35,7 +35,7 @@ describe('Delete Postagem Controller', () => {
 
     expect(mockFindByCredencialId).toHaveBeenCalledWith(1);
     expect(mockHandler).toHaveBeenCalledWith(1);
-    expect(reply.code).toHaveBeenCalledWith(204);
+    expect(reply.code).toHaveBeenCalledWith(200);
     expect(reply.send).toHaveBeenCalled();
   });
 
