@@ -4,6 +4,7 @@ import { Usuario } from '@/entities/usuario.entity';
 import { Credencial } from '@/entities/credencial.entity';
 import { appDataSource } from '@/lib/typeorm/typeorm';
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
+import { Perfil } from "@/entities/perfil.entity";
 
 let postagemRepository: PostagemRepository;
 
@@ -12,7 +13,7 @@ beforeAll(async () => {
     type: 'sqlite',
     database: ':memory:',
     dropSchema: true,
-    entities: [Postagem, Usuario, Credencial], 
+    entities: [Postagem, Usuario, Credencial, Perfil], 
     synchronize: false,
     logging: false,
   });
@@ -28,10 +29,18 @@ beforeEach(async () => {
   await queryRunner.query('DROP TABLE IF EXISTS postagem');
   await queryRunner.query('DROP TABLE IF EXISTS usuario');
   await queryRunner.query('DROP TABLE IF EXISTS credencial');
+  await queryRunner.query('DROP TABLE IF EXISTS perfil');
   await queryRunner.query('PRAGMA foreign_keys=ON');
 
   await appDataSource.synchronize(true);
 
+  const perfilRepository = appDataSource.getRepository(Perfil);
+  const perfil = await perfilRepository.save({
+    id: 1,
+    perfil: "Aluno",
+  });
+
+  
   const credencialRepository = appDataSource.getRepository(Credencial);
   const credencial = await credencialRepository.save({
     username: 'teste',
@@ -41,7 +50,7 @@ beforeEach(async () => {
   const usuarioRepository = appDataSource.getRepository(Usuario);
   await usuarioRepository.save({
     nome: 'Usuário Teste',
-    perfilid: 1,
+    perfilid: perfil?.id,
     credencialId: credencial.id, 
   });
 

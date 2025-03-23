@@ -1,4 +1,5 @@
 import { Credencial } from "@/entities/credencial.entity";
+import { Perfil } from "@/entities/perfil.entity";
 import { Usuario } from "@/entities/usuario.entity";
 import { CredencialRepository } from "@/lib/typeorm/credencial.repository";
 import { appDataSource } from "@/lib/typeorm/typeorm";
@@ -10,7 +11,7 @@ beforeAll(async () => {
     type: 'sqlite',
     database: ':memory:',
     dropSchema: true,
-    entities: [Credencial, Usuario], 
+    entities: [Credencial, Usuario, Perfil], 
     synchronize: false,
     logging: false,
   });
@@ -25,6 +26,7 @@ beforeEach(async () => {
   await queryRunner.query('PRAGMA foreign_keys=OFF');
   await queryRunner.query('DROP TABLE IF EXISTS credencial');
   await queryRunner.query('DROP TABLE IF EXISTS usuario');
+  await queryRunner.query('DROP TABLE IF EXISTS Perfil');
   await queryRunner.query('PRAGMA foreign_keys=ON');
   await appDataSource.synchronize(true);
 });
