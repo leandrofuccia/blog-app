@@ -242,7 +242,7 @@ POST /credencial/signin
 }
 ```
 
-**Resposta esperada:**
+**Resposta esperada (200):**
 
 ```json
 {
