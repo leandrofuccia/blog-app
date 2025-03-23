@@ -346,8 +346,40 @@ Para utilizar os demais endpoints, é necessário criar um Usuário e definir se
     "dataatualizacao": "2025-03-17T17:40:00.127Z"
   }
   ```
+- **Resposta: Não Encontrado (404):**
+  ```json
+  {
+    "message": "Não encontrado!"
+  }
+  ```
 
-#### 7. **Editar uma Postagem (Apenas Professores)**
+#### 7. **Buscar Postagens por UsuarioId**
+
+- **Endpoint:** `GET /posts/usuario/:usuarioId`
+- **Descrição:** Retorna todas as postagens de um usuário específico.
+- **Parâmetros:**
+  - **id:** id do usuario
+- **Resposta de Sucesso (200):**
+  ```json
+  [
+    {
+      "titulo": "Título da Postagem",
+      "conteudo": "Conteúdo da postagem",
+      "usuarioid": 1,
+      "id": 1,
+      "datacriacao": "2025-03-17T17:40:00.127Z",
+      "dataatualizacao": "2025-03-17T17:40:00.127Z"
+    }
+  ]
+  ```
+- **Resposta: Não Encontrado (404):**
+  ```json
+  {
+    "message": "Não encontrado!"
+  }
+  ```
+
+  #### 8. **Editar uma Postagem (Apenas Professores)**
 
 - **Endpoint:** `PUT /posts/:id`
 - **Descrição:** Atualiza uma postagem existente.
@@ -372,7 +404,7 @@ Para utilizar os demais endpoints, é necessário criar um Usuário e definir se
   }
   ```
 
-#### 8. **Excluir uma Postagem (Apenas Professores)**
+#### 9. **Excluir uma Postagem (Apenas Professores)**
 
 - **Endpoint:** `DELETE /posts/:id`
 - **Descrição:** Remove uma postagem específica.
@@ -385,7 +417,7 @@ Para utilizar os demais endpoints, é necessário criar um Usuário e definir se
   }
   ```
 
-#### 9. **Buscar Postagens por Termo de Pesquisa**
+#### 10. **Buscar Postagens por Termo de Pesquisa**
 
 - **Endpoint:** `GET /posts/search/:termo`
 - **Descrição:** Busca postagens que contenham o termo no título ou conteúdo.
