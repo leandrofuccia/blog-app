@@ -50,7 +50,7 @@ describe('Create Credencial Controller', () => {
   });
 
   it('deve retornar erro de validação para dados de entrada inválidos', async () => {
-    request.body = { username: 'newuser', password: '' }; // Senha vazia para forçar o erro de validação
+    request.body = { username: 'newuser', password: '' }; 
 
     try {
       await create(request, reply);

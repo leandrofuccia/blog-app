@@ -5,7 +5,6 @@ import { makeFindUsuarioByCredencialUseCase } from '@/use-cases/factory/make-fin
 import { unauthorizedPerfilError } from '@/use-cases/errors/unauthorized-perfil-error';
 import { InvalidUsuarioError } from '@/use-cases/errors/invalid-usuario-error';
 
-// Mock das funções
 jest.mock('@/use-cases/factory/make-delete-postagem-use-case', () => ({
   makeDeletePostagemUseCase: jest.fn(),
 }));
@@ -16,11 +15,9 @@ jest.mock('@/use-cases/factory/make-find-usuario-by-credencial', () => ({
 
 describe('Delete Postagem Controller', () => {
   it('deve excluir uma postagem e retornar 204 quando o usuário tem perfil permitido', async () => {
-    // Mock da função makeFindUsuarioByCredencialUseCase para retornar um usuário com perfil permitido
     const mockFindByCredencialId = jest.fn().mockResolvedValue([{ id: 1, perfilid: 2 }]);
     (makeFindUsuarioByCredencialUseCase as jest.Mock).mockReturnValue({ handler: mockFindByCredencialId });
 
-    // Mock da função makeDeletePostagemUseCase
     const mockHandler = jest.fn().mockResolvedValue(null);
     (makeDeletePostagemUseCase as jest.Mock).mockReturnValue({ handler: mockHandler });
 
@@ -43,7 +40,7 @@ describe('Delete Postagem Controller', () => {
   });
 
   it('deve retornar erro quando o usuário não tem permissão para excluir a postagem', async () => {
-    const mockFindByCredencialId = jest.fn().mockResolvedValue([{ id: 1, perfilid: 1 }]); // Usuário sem permissão
+    const mockFindByCredencialId = jest.fn().mockResolvedValue([{ id: 1, perfilid: 1 }]);
     (makeFindUsuarioByCredencialUseCase as jest.Mock).mockReturnValue({ handler: mockFindByCredencialId });
 
     const request = {
@@ -64,7 +61,7 @@ describe('Delete Postagem Controller', () => {
   });
 
   it('deve retornar erro quando nenhum usuário é encontrado', async () => {
-    const mockFindByCredencialId = jest.fn().mockResolvedValue([]); // Nenhum usuário encontrado
+    const mockFindByCredencialId = jest.fn().mockResolvedValue([]);
     (makeFindUsuarioByCredencialUseCase as jest.Mock).mockReturnValue({ handler: mockFindByCredencialId });
 
     const request = {

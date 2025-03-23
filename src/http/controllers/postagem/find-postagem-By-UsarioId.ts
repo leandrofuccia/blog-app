@@ -17,22 +17,15 @@ export async function findPostagemByUsuarioId(
     })
         
     const { page, limit } = registrerQuerySchema.parse(request.query)
-
     const pageNumber = page ?? 1
     const limitNumber = limit ?? 10
-    
-
     const { usuarioId } = registreParamSchema.parse(request.params)
-    
-
     const findPostagemByUsuarioUseCase = makeFindPostagemByUsuarioUseCase()
-
     const postagem = await findPostagemByUsuarioUseCase.handler(
         usuarioId,
         pageNumber,
         limitNumber
     )
-
     return reply.status(200).send(postagem)
-    
+   
 }

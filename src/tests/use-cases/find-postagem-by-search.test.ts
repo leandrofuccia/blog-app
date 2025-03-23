@@ -46,14 +46,12 @@ describe("FindPostagemUseCase", () => {
     });
 
     it("deve lançar ResourceNotFoundError se não encontrar postagens", async () => {
-        const postagens: any[] = []; // Nenhuma postagem encontrada.
+        const postagens: any[] = [];
         
-        // Simula a implementação do método `findPostagemBySearch` para retornar um array vazio.
         postagemRepositoryMock.findPostagemBySearch = jest.fn().mockImplementation(() => {
-            return Promise.resolve(postagens); // Retorna um array vazio
+            return Promise.resolve(postagens); 
         });
     
-        // Espera que o erro seja lançado
         await expect(findPostagemSearchUseCase.handler("não existe", 1, 2)).rejects.toThrow(ResourceNotFoundError);
     });
     

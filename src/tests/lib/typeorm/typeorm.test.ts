@@ -22,7 +22,6 @@ describe('TypeORM Database Configuration', () => {
     expect(appDataSource.options.type).toBe('sqlite');
     expect(appDataSource.options.database).toBe(':memory:');
 
-    // Se o tipo de banco NÃO for sqlite, garantimos que as propriedades existem
     if (
       appDataSource.options.type !== 'sqlite' &&
       'host' in appDataSource.options &&
@@ -73,14 +72,9 @@ describe('TypeORM Database Configuration', () => {
       Object.defineProperty(appDataSource, 'isInitialized', { value: false });
       const destroySpy = jest.spyOn(appDataSource, 'destroy');
       const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
-  
       await closeDatabase();
-  
-      // Verifica que o destroy não foi chamado
       expect(destroySpy).not.toHaveBeenCalled();
-      // Verifica que nenhuma mensagem de sucesso foi exibida
       expect(consoleLogSpy).not.toHaveBeenCalled();
-  
       consoleLogSpy.mockRestore();
     });
   
@@ -90,21 +84,12 @@ describe('TypeORM Database Configuration', () => {
       jest.spyOn(appDataSource, 'destroy').mockRejectedValue(error);
       const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
   
-      await closeDatabase();
-  
-      // Verifica que o erro foi capturado e logado
-      expect(consoleErrorSpy).toHaveBeenCalledWith('Erro ao desconectar do banco de dados:', error);
-  
+      await closeDatabase();  
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Erro ao desconectar do banco de dados:', error);  
       consoleErrorSpy.mockRestore();
     
   });
 
-
-  it('deve usar .env.test quando NODE_ENV for "test"', () => {
-    process.env.NODE_ENV = 'test';
-    const envFilePath = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
-    expect(envFilePath).toBe('.env.test');
-  });
 
   it('deve usar .env quando NODE_ENV não for "test"', () => {
     process.env.NODE_ENV = 'production';

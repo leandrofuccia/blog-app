@@ -43,6 +43,4 @@ describe("SigninUseCase", () => {
     
             await expect(signinUseCase.handler("inexistente@gmail.com")).rejects.toThrow(InvalidCredentialsError);
         });
-
-   
 });

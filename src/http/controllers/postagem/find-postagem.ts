@@ -11,20 +11,14 @@ export async function findPostagem(
         page: z.coerce.number().optional(),
         limit: z.coerce.number().optional(),
     })
-    
-    
-    const { page, limit } = registrerQuerySchema.parse(request.query)
 
+    const { page, limit } = registrerQuerySchema.parse(request.query)
     const pageNumber = page ?? 1
     const limitNumber = limit ?? 10
-    
     const findPostagemUseCase = makeFindPostagemUseCase()
-
     const postagem = await findPostagemUseCase.handler(
         pageNumber,
         limitNumber
     )
-
     return reply.status(200).send(postagem)
-    
 }

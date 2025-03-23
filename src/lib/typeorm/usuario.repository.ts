@@ -27,8 +27,7 @@ export class UsuarioRepository implements IUsuarioRepository{
     async findUsuarioByCredencialId(
         credencialId: number                    
     ): Promise<(IUsuario & ICredencial)[]> {
-        console.log('Entrou na função findUsuarioByCredencialId');
-                        
+                             
         const queryBuilder = this.repository.createQueryBuilder("usuario")
             .leftJoinAndSelect("usuario.credencial", "credencial") // Certifique-se de que o relacionamento está definido corretamente na entidade
             .where("usuario.credencialid = :credencialId", { credencialId });

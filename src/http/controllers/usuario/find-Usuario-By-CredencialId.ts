@@ -11,9 +11,7 @@ export async function findUsuarioByCredencialId(
         credencialId: z.coerce.number()
     })
  
-    console.log ('Entrou em findUsuarioByCredencialId')
     const { credencialId } = registreParamSchema.parse(request.params)
-   
     const findPostagemByUsuarioUseCase = makeFindUsuarioByCredencialUseCase()
     console.log ('Chamando a função handler')
     const usuario = await findPostagemByUsuarioUseCase.handler(credencialId)
@@ -23,5 +21,4 @@ export async function findUsuarioByCredencialId(
     }
    
     return reply.status(200).send(usuario)
-
 }  

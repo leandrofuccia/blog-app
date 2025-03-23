@@ -5,7 +5,6 @@ export async function validateJwt(
     reply: FastifyReply,
 ) {
     try {
-        //const routeFreeList = ['POST-/credencial', 'POST-/credencial/signin', 'GET-/documentation']
         const routeFreeList = [
             'POST-/credencial', 
             'POST-/credencial/signin', 
@@ -17,12 +16,11 @@ export async function validateJwt(
             'GET-/docs/static/swagger-ui-bundle.js',
             'GET-/docs/static/swagger-initializer.js',
             'GET-/docs/static/favicon-32x32.png',
-            'GET-/docs/static/favicon-16x16.png',
-            'GET-/redoc'
+            'GET-/docs/static/favicon-16x16.png'      
         ];
         
-        const validateRoute = `${request.method}-${request.url}` // Remove o espaço ao redor do hífen
-
+        const validateRoute = `${request.method}-${request.url}` 
+        
         if (routeFreeList.includes(validateRoute)) return
 
         await request.jwtVerify ()

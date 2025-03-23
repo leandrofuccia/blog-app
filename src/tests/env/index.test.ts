@@ -4,8 +4,8 @@ jest.mock('dotenv', () => ({
 
 describe('Env Configuration', () => {
   beforeEach(() => {
-    jest.resetModules(); // Reseta os módulos para garantir uma nova leitura das variáveis
-    process.env = { ...process.env, // Mantém outras variáveis, mas sobrescreve as importantes para o teste
+    jest.resetModules(); 
+    process.env = { ...process.env, 
       NODE_ENV: 'test',
       PORT: '3002',
       DATABASE_USER: 'test_user',
@@ -18,7 +18,7 @@ describe('Env Configuration', () => {
   });
 
   it('deve carregar corretamente as variáveis de ambiente no modo de teste', async () => {
-    const { env } = await import('@/env'); // Importa `env` somente depois de redefinir as variáveis
+    const { env } = await import('@/env'); 
 
     expect(env.NODE_ENV).toBe('test');
     expect(env.PORT).toBe(3002);
@@ -30,19 +30,15 @@ describe('Env Configuration', () => {
 
 
   it('deve lançar um erro quando as variáveis de ambiente forem inválidas', async () => {
-    process.env = { NODE_ENV: 'invalid_env' }; // Valor inválido para NODE_ENV
-  
+    process.env = { NODE_ENV: 'invalid_env' }; 
     await expect(import('@/env')).rejects.toThrow('Variáveis de ambiente inválidas');
   });
 
 
   it('deve chamar dotenv.config com o caminho correto', async () => {
-    const dotenvSpy = jest.spyOn(require('dotenv'), 'config');
-  
-    await import('@/env');
-  
-    expect(dotenvSpy).toHaveBeenCalledWith({ path: expect.stringContaining('.env') });
-  
+    const dotenvSpy = jest.spyOn(require('dotenv'), 'config');  
+    await import('@/env');  
+    expect(dotenvSpy).toHaveBeenCalledWith({ path: expect.stringContaining('.env') });  
     dotenvSpy.mockRestore();
   });
     

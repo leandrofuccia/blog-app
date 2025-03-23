@@ -12,7 +12,6 @@ import { credencialRoutes } from "./http/controllers/credencial/route"
 import fastifySwagger from '@fastify/swagger';
 import {jsonSchemaTransform, serializerCompiler,validatorCompiler} from "fastify-type-provider-zod";
 import fastifySwaggerUi from "@fastify/swagger-ui"
-import { setupRedoc } from "./http/middlewares/redoc.middleware"
 
 export const app = fastify()
 
@@ -45,12 +44,11 @@ app.register(fastifySwagger, {
   transform: jsonSchemaTransform
 })
 
+
 app.register(fastifySwaggerUi, {
   routePrefix: '/docs'
 })
 
-setupRedoc(app);
-  
 app.register(fastifyJwt, {
     secret: env.JWT_SECRET,
     sign: {expiresIn: '10m'},

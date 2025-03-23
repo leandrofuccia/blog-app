@@ -23,7 +23,6 @@ export async function deletePostagem(
         throw new InvalidUsuarioError()
     }
 
-    console.log("Perfil ",  usuario[0].perfilid)    
     if (usuario[0].perfilid !== 2) {
         throw new unauthorizedPerfilError()
     }

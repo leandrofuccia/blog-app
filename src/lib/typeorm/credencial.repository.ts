@@ -14,7 +14,7 @@ export class CredencialRepository implements ICredencialRepository{
     }
 
     create(credencial: ICredencial): Promise<ICredencial | undefined> {
-            
+       
         return this.repository.save(credencial)
     }
 

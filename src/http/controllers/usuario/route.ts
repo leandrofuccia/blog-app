@@ -5,9 +5,6 @@ import { z } from "zod"
 import { findUsuarioById } from "./find-Usuario-By-Id"
 
 export async function usuarioRoutes(app: FastifyInstance) {
-  console.log('Registrando rota /usuario')  
-
-// Definição explícita do esquema do Swagger
 
   const signinSchema = {
     tags: ["Usuário"], 
@@ -25,13 +22,9 @@ export async function usuarioRoutes(app: FastifyInstance) {
       }),
     },
   }
-
- 
   app.post('/usuario', { schema: signinSchema }, create)
-  console.log('Registrando rota /usuario/credencial/:credencialId')
   app.get('/usuario/credencial/:credencialId', { schema: { tags: ['Usuário'] } },  findUsuarioByCredencialId)
   app.get('/usuario/:usuarioId', { schema: { tags: ['Usuário'] } }, findUsuarioById)
- 
 }
 
 

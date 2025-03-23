@@ -6,8 +6,7 @@ import { FastifyReply, FastifyRequest } from "fastify"
 import { number, z } from "zod"
 
 export async function update(request: FastifyRequest, reply: FastifyReply) {
-    console.log('registrerBodySchema');
-    
+   
     const registreParamSchema = z.object({
         id: z.coerce.number()
     })
@@ -27,12 +26,10 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
         throw new InvalidUsuarioError()
     } 
         
-    console.log("Perfil ",  usuario[0].perfilid)    
     if (usuario[0].perfilid !== 2) {
         throw new unauthorizedPerfilError()
     }
 
-    console.log('Chamando função update postagem')   
     const updatePostagemUseCase = makeUpdatePostagemUseCase()
     const postagem = await updatePostagemUseCase.handler(
         id,

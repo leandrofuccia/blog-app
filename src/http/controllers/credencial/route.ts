@@ -4,8 +4,6 @@ import { signin } from "./signin"
 import { z } from "zod"
 
 export async function credencialRoutes(app: FastifyInstance) {
-  console.log('Registrando rota /credencial') 
-
   const signinSchema = {
     tags: ["Credencial"], 
     body: z.object({

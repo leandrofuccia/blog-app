@@ -5,7 +5,6 @@ import { makeSigninUseCase } from '@/use-cases/factory/make-signin-use-case';
 import { makeFindUsuarioByCredencialUseCase } from '@/use-cases/factory/make-find-usuario-by-credencial';
 import { compare } from 'bcryptjs';
 
-// Mock das funções
 jest.mock('@/use-cases/factory/make-signin-use-case', () => ({
   makeSigninUseCase: jest.fn(),
 }));
@@ -23,14 +22,12 @@ describe('Signin Controller', () => {
   let mockFindUsuarioByCredencialUseCase: jest.Mock;
 
   beforeEach(() => {
-    // Mock do caso de uso de login
-    mockSigninUseCase = jest.fn().mockResolvedValue({
+      mockSigninUseCase = jest.fn().mockResolvedValue({
       id: 1,
       username: 'testuser',
       password: 'hashedpassword',
     });
 
-    // Mock do caso de uso de busca pelo credencial
     mockFindUsuarioByCredencialUseCase = jest.fn().mockResolvedValue([{ id: 1 }]);
 
     (makeSigninUseCase as jest.Mock).mockReturnValue({ handler: mockSigninUseCase });
@@ -38,7 +35,6 @@ describe('Signin Controller', () => {
       handler: mockFindUsuarioByCredencialUseCase,
     });
 
-    // Mock da comparação de senha
     (compare as jest.Mock).mockResolvedValue(true);
 
     request = {
@@ -66,7 +62,7 @@ describe('Signin Controller', () => {
   });
 
   it('deve retornar erro para credenciais inválidas quando a senha não for correspondente', async () => {
-    (compare as jest.Mock).mockResolvedValue(false); // Senha não confere
+    (compare as jest.Mock).mockResolvedValue(false);
 
     await expect(signin(request, reply)).rejects.toThrow(InvalidCredentialsError);
 
@@ -77,6 +73,4 @@ describe('Signin Controller', () => {
     expect(reply.send).not.toHaveBeenCalled();
   });
  
-
-  
 });

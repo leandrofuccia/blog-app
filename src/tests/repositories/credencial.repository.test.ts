@@ -22,21 +22,17 @@ beforeAll(async () => {
 beforeEach(async () => {
   const queryRunner = appDataSource.createQueryRunner();
   
-  // Desativar chaves estrangeiras, remover tabelas e reativar chaves estrangeiras
   await queryRunner.query('PRAGMA foreign_keys=OFF');
   await queryRunner.query('DROP TABLE IF EXISTS credencial');
   await queryRunner.query('DROP TABLE IF EXISTS usuario');
   await queryRunner.query('PRAGMA foreign_keys=ON');
   await appDataSource.synchronize(true);
-
-  
 });
 
 afterAll(async () => {
   await appDataSource.destroy();
 });
 
-console.log('deve criar uma credencial')
 describe('CredencialRepository', () => {
   it('deve criar uma credencial', async () => {
     const newCredencial = {

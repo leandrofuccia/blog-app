@@ -8,20 +8,15 @@ import dotenv from "dotenv";
 import { Perfil } from "@/entities/perfil.entity";
 import { seedPerfilTableOrm } from "@/lib/typeorm/seedPerfilTableOrm";
 
-
-// Determina o caminho do arquivo .env com base no NODE_ENV
 const envFilePath = process.env.NODE_ENV === "test" ? ".env.test" : ".env";
 const envPath = path.resolve(process.cwd(), envFilePath);
 dotenv.config({ path: envPath });
 
-// Determina o host do banco dependendo do ambiente
 const databaseHost =
   env.NODE_ENV === "test"
-    ? "localhost" // Define 'localhost' no ambiente de teste
+    ? "localhost" 
     : env.DATABASE_HOST || (process.env.DOCKER_ENV ? "db" : "localhost");
 
-   
-// Configuração do DataSource
 export const appDataSource = new DataSource({
   type: env.NODE_ENV === "test" ? "sqlite" : "postgres",
   host: databaseHost,
@@ -34,7 +29,6 @@ export const appDataSource = new DataSource({
   synchronize: env.NODE_ENV !== "production",  
 });
 
-// Função para inicializar o banco de dados
 export async function initializeDatabase(): Promise<void> {
   try {
     console.log("Database Config:", {
@@ -44,8 +38,6 @@ export async function initializeDatabase(): Promise<void> {
       password: env.DATABASE_PASSWORD,
       database: env.DATABASE_NAME,
     });
-
-    console.log("Conectando ao banco...");
 
     await appDataSource.initialize();
     if (env.NODE_ENV !== "test") {
@@ -63,7 +55,6 @@ export async function initializeDatabase(): Promise<void> {
   }
 }
 
-// Função para fechar a conexão com o banco de dados
 export async function closeDatabase(): Promise<void> {
   try {
     if (appDataSource.isInitialized) {

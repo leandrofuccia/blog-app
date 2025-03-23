@@ -5,7 +5,6 @@ import { makeFindUsuarioByCredencialUseCase } from '@/use-cases/factory/make-fin
 import { unauthorizedPerfilError } from '@/use-cases/errors/unauthorized-perfil-error';
 import { InvalidUsuarioError } from '@/use-cases/errors/invalid-usuario-error';
 
-// Mock das funções
 jest.mock('@/use-cases/factory/make-create-postagem-use-case', () => ({
   makeCreatePostagemUseCase: jest.fn(),
 }));
@@ -22,7 +21,7 @@ describe('create controller', () => {
   });
 
   it('deve criar uma nova postagem quando o usuário tem perfil correto', async () => {
-    const mockFindByCredencialId = jest.fn().mockResolvedValue([{ id: 1, perfilid: 2 }]); // Usuário com perfil permitido
+    const mockFindByCredencialId = jest.fn().mockResolvedValue([{ id: 1, perfilid: 2 }]); 
     (makeFindUsuarioByCredencialUseCase as jest.Mock).mockReturnValue({ handler: mockFindByCredencialId });
 
     const mockHandler = jest.fn().mockResolvedValue({ id: 1, titulo: 'Test', conteudo: 'Conteúdo de teste', usuarioid: 1 });
@@ -47,7 +46,7 @@ describe('create controller', () => {
   });
 
   it('deve retornar erro quando o usuário não tem perfil permitido', async () => {
-    const mockFindByCredencialId = jest.fn().mockResolvedValue([{ id: 1, perfilid: 1 }]); // Usuário com perfil errado
+    const mockFindByCredencialId = jest.fn().mockResolvedValue([{ id: 1, perfilid: 1 }]);
     (makeFindUsuarioByCredencialUseCase as jest.Mock).mockReturnValue({ handler: mockFindByCredencialId });
 
     const request = {
@@ -68,7 +67,7 @@ describe('create controller', () => {
   });
 
   it('deve retornar erro quando o usuário não é encontrado', async () => {
-    const mockFindByCredencialId = jest.fn().mockResolvedValue([]); // Nenhum usuário encontrado
+    const mockFindByCredencialId = jest.fn().mockResolvedValue([]); 
     (makeFindUsuarioByCredencialUseCase as jest.Mock).mockReturnValue({ handler: mockFindByCredencialId });
 
     const request = {

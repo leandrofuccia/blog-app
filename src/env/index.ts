@@ -7,39 +7,35 @@ const nodeEnvAux = process.env.NODE_ENV;
 // Limpa todas as variáveis de ambiente previamente definidas para evitar conflitos
 /*if (nodeEnvAux !== "test" ) {
   Object.keys(process.env).forEach((key) => { delete process.env[key]; });
-}*/
-
-// Carrega as variáveis do arquivo .env com o caminho absoluto
+}
+*/
 const envPath = path.resolve(process.cwd(), './.env');
 dotenv.config({ path: envPath });
 
-// Define valores padrão para ambiente de teste
 const testDefaults = {
   NODE_ENV: "test",
   PORT: 3002,
   DATABASE_USER: "test_user",
   DATABASE_HOST: "localhost",
-  DATABASE_NAME: ":memory:", // Banco em memória para testes
+  DATABASE_NAME: ":memory:", 
   DATABASE_PASSWORD: "",
   DATABASE_PORT: "",
   JWT_SECRET: "test_secret",
 };
 
 
-// Determina o ambiente final com base no NODE_ENV
 const environment =
   process.env.NODE_ENV === "test"
-    ? { ...testDefaults, ...process.env } // Mescla defaults de teste com as variáveis carregadas
+    ? { ...testDefaults, ...process.env } 
     : {
         ...process.env,
         DATABASE_HOST:
           process.env.NODE_ENV === "docker"
-            ? "db" // Host especial para Docker
+            ? "db" 
             : process.env.DATABASE_HOST,
       };
 
  
-// Define o esquema de validação para as variáveis de ambiente
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]),
   PORT: z.coerce.number().default(3002),
@@ -51,7 +47,6 @@ const envSchema = z.object({
   JWT_SECRET: z.string(),
 });
 
-// Valida e aplica os valores das variáveis de ambiente
 const _env = envSchema.safeParse(environment);
 
 if (!_env.success) {
@@ -59,5 +54,4 @@ if (!_env.success) {
   throw new Error("Variáveis de ambiente inválidas");
 }
 
-// Exporta as variáveis para uso na aplicação
 export const env = _env.data;

@@ -12,7 +12,7 @@ beforeAll(async () => {
     type: 'sqlite',
     database: ':memory:',
     dropSchema: true,
-    entities: [Postagem, Usuario, Credencial], // Incluindo a entidade Credencial
+    entities: [Postagem, Usuario, Credencial], 
     synchronize: false,
     logging: false,
   });
@@ -24,7 +24,6 @@ beforeAll(async () => {
 beforeEach(async () => {
   const queryRunner = appDataSource.createQueryRunner();
   
-  // Desativar chaves estrangeiras, remover tabelas e reativar chaves estrangeiras
   await queryRunner.query('PRAGMA foreign_keys=OFF');
   await queryRunner.query('DROP TABLE IF EXISTS postagem');
   await queryRunner.query('DROP TABLE IF EXISTS usuario');
@@ -33,19 +32,17 @@ beforeEach(async () => {
 
   await appDataSource.synchronize(true);
 
-  // Inserir uma credencial fictícia no banco de dados
   const credencialRepository = appDataSource.getRepository(Credencial);
   const credencial = await credencialRepository.save({
     username: 'teste',
     password: 'senha',
   });
 
-  // Inserir um usuário fictício no banco de dados
   const usuarioRepository = appDataSource.getRepository(Usuario);
   await usuarioRepository.save({
     nome: 'Usuário Teste',
     perfilid: 1,
-    credencialId: credencial.id, // Usando o ID da credencial criada
+    credencialId: credencial.id, 
   });
 
   await queryRunner.release();
@@ -55,13 +52,12 @@ afterAll(async () => {
   await appDataSource.destroy();
 });
 
-console.log('deve criar uma postagem')
 describe('PostagemRepository', () => {
   it('deve criar uma postagem', async () => {
     const newPost = {
       titulo: 'Título de Teste',
       conteudo: 'Conteúdo de Teste',
-      usuarioid: 1, // Certifique-se de que o usuário com este ID existe
+      usuarioid: 1, 
     };
 
     const savedPost = await postagemRepository.create(newPost);
@@ -70,12 +66,11 @@ describe('PostagemRepository', () => {
   });
 
  
-  console.log('deve encontrar a postagem pelo ID')
   it('deve encontrar a postagem pelo ID', async () => {
     const newPost = {
       titulo: 'Título de Teste',
       conteudo: 'Conteúdo de Teste',
-      usuarioid: 1, // Certifique-se de que o usuário com este ID existe
+      usuarioid: 1, 
     };
 
     const savedPost = await postagemRepository.create(newPost);
@@ -91,7 +86,6 @@ describe('PostagemRepository', () => {
   });
 
 
-   console.log('deve encontrar postagens pelo usuário ID')
   it('deve encontrar postagens pelo usuário ID', async () => {
     const newPost = {
       titulo: 'Título de Teste',
@@ -107,7 +101,6 @@ describe('PostagemRepository', () => {
     expect(posts[0].titulo).toBe(newPost.titulo);
   });
 
-  console.log('deve atualizar uma postagem')
 
   it('deve atualizar uma postagem', async () => {
     const newPost = {
@@ -142,7 +135,6 @@ describe('PostagemRepository', () => {
   });
 
  
-  console.log('deve excluir uma postagem')
   it("deve excluir uma postagem", async () => {
     const newPost = await postagemRepository.create({
       titulo: "Título para Deletar",
@@ -155,7 +147,6 @@ describe('PostagemRepository', () => {
     const postExcluido = await postagemRepository.findPostagemById(savedPost.id!);
     expect(postExcluido).toBeNull();
   });
-
 
 
   it('deve buscar postagens pelo título', async () => {
@@ -217,9 +208,7 @@ describe('PostagemRepository', () => {
     expect(foundPost[0].conteudo).toBe("Conteúdo único");
   });
 
-  
 
-  console.log('deve listar todas a postagens com a paginação correta')  
   it('deve listar todas a postagens com a paginação correta', async () => {
     let newPost1 = postagemRepository.create({ titulo: "Postagem 1", conteudo: "Conteúdo 1", usuarioid: 1 });
     let newPost2 = postagemRepository.create({ titulo: "Postagem 2", conteudo: "Conteúdo 2", usuarioid: 1 });
@@ -230,16 +219,11 @@ describe('PostagemRepository', () => {
     const foundPost = await postagemRepository.findPostagem(1, 2);
      
     expect(foundPost.length).toBe(2);
-
-
   });
 
 
-  console.log('deve retornar uma array vazio quando não encontrar nenhuma postagem')  
-  it('deve retornar uma array vazio quando não encontrar nenhuma postagem', async () => {
-        
+  it('deve retornar uma array vazio quando não encontrar nenhuma postagem', async () => {        
     const foundPost = await postagemRepository.findPostagem(1, 2);
-     
     expect(foundPost).toEqual([]);
   });
 
@@ -257,12 +241,4 @@ describe('PostagemRepository', () => {
     expect(postagens).toHaveLength(1);
   });
 
-
-  
-  
-  
-
-  
-
-  // Outros testes para os métodos do repositório
 });

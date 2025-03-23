@@ -9,8 +9,6 @@ import { update } from "./update";
 import { z } from "zod";
 
 export async function postagemRoutes(app: FastifyInstance) {
-  console.log('Registrando rota /posts');
-
   const postagemSchema = {
     tags: ['Postagem'],
     body: z.object({
@@ -49,36 +47,16 @@ export async function postagemRoutes(app: FastifyInstance) {
     },
   };
 
-  // Esquema para query params
   const requestQuerySchema = z.object({
-    page: z.string().optional().default("1"),  // Definindo valor padrão caso não informado
-    limit: z.string().optional().default("10"), // Definindo valor padrão caso não informado
+    page: z.string().optional().default("1"),  
+    limit: z.string().optional().default("10"), 
   });
 
-  // Rota POST para criar postagem
   app.post('/posts', { schema: postagemSchema }, create);
-
-  // Rota GET para buscar postagens por usuário
-  console.log('Registrando rota /posts/usuario/:usuarioId');
   app.get('/posts/usuario/:usuarioId', { schema: { querystring: requestQuerySchema, tags: ['Postagem'] } }, findPostagemByUsuarioId);
-
-  // Rota PUT para atualizar postagem
-  console.log('Registrando rota /posts update');
   app.put('/posts/:id', { schema: postagemSchemaUpdate }, update);
-
-  // Rota DELETE para excluir postagem
-  console.log('Registrando rota /posts delete');
   app.delete('/posts/:id', { schema: { tags: ['Postagem'] } }, deletePostagem);
-
-  // Rota GET para buscar postagem por ID
-  console.log('Registrando rota /posts/id');
   app.get('/posts/:id', { schema: { tags: ['Postagem'] } }, findPostagemById);
-
-  // Rota GET para buscar postagens por termo de pesquisa
-  console.log('Registrando rota /posts/search');
   app.get('/posts/search/:termo', { schema: { querystring: requestQuerySchema, tags: ['Postagem'] } }, findPostagemBySearch);
-
-  // Rota GET para listar todas as postagens
-  console.log('Registrando rota /posts');
   app.get('/posts', { schema: { querystring: requestQuerySchema, tags: ['Postagem'] } }, findPostagem);
 }
