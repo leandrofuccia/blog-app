@@ -379,7 +379,7 @@ Para utilizar os demais endpoints, é necessário criar um Usuário e definir se
   }
   ```
 
-  #### 8. **Editar uma Postagem (Apenas Professores)**
+#### 8. **Editar uma Postagem (Apenas Professores)**
 
 - **Endpoint:** `PUT /posts/:id`
 - **Descrição:** Atualiza uma postagem existente.
