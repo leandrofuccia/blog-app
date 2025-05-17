@@ -53,4 +53,8 @@ export class UsuarioRepository implements IUsuarioRepository{
 
     }
 
+    async findUsuario(page: number, limit: number): Promise<IUsuario[]> {
+        return await this.repository.find({
+        });
+    }    
 }

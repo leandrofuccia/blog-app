@@ -8,3 +8,6 @@ export class CreateCredencialUseCase {
     return this.credencialRepository.create(credencial)
   }
 }
+
+
+

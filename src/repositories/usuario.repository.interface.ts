@@ -9,5 +9,10 @@ export interface IUsuarioRepository{
                 usuarioId: number                 
              ): Promise<(IUsuario & ICredencial)[]>
 
-    findByUserId(id: number) : Promise<IUsuario>         
+    findByUserId(id: number) : Promise<IUsuario> 
+    
+    findUsuario(
+          page: number, 
+          limit: number,
+       ): Promise<(IUsuario)[]>
 }
