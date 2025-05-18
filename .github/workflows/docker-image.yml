@@ -59,6 +59,9 @@ jobs:
       - name: Verificar container existente do compose
         run: docker ps -a | grep blog_app && docker rm -f blog_app || true
 
+      - name: Create Docker network
+        run: docker network create app-network || true
+
       - name: Build da imagem Docker
         run: docker compose up --build -d
 
