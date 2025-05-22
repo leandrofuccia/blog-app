@@ -43,7 +43,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   try {
     const credencial = await createCredencialUseCase.handler(userWithHashedPassword);
     return reply.status(201).send({
-      id: credencial?.id,
+      id: credencial?.id?.toString(),
       username: credencial?.username,
     });
   } catch (error: any) {

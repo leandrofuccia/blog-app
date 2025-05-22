@@ -43,10 +43,14 @@ export async function credencialRoutes(app: FastifyInstance) {
     }),
     response: {
       201: z.object({
-        id: z.string(),
+        id: z.union([z.string(), z.number()]),
         username: z.string().email(),
       }),
-      400: z.object({
+      500: z.object({
+        message: z.string(),
+        code: z.string(),
+      }),
+      409: z.object({
         message: z.string(),
         code: z.string(),
       }),
