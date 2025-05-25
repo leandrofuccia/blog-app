@@ -150,9 +150,9 @@ O arquivo [docker-compose.yml](https://raw.githubusercontent.com/leandrofuccia/b
 
 Antes de subir os serviços com docker-compose, crie a rede compartilhada:
 
-```bash
-docker network create app-network
-```
+   ```bash
+   docker network create app-network
+   ```
 
 #### **5. Iniciando os Contêineres**
 
