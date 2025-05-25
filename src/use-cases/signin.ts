@@ -7,10 +7,6 @@ export class SigninUseCase{
 
     async handler(username: string){
         const user = await this.credencialRepository.findByUsername(username)
-
-        if (!user) {
-            throw new InvalidCredentialsError()            
-        }
         return user
     }
 }
