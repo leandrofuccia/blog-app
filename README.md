@@ -146,7 +146,15 @@ A imagem da aplicação está disponível no repositório do Docker Hub [leandro
 
 O arquivo [docker-compose.yml](https://raw.githubusercontent.com/leandrofuccia/blog-app/refs/heads/main/docker-compose.yml) está disponível no repositório do GitHub [leandrofuccia/blog-app](https://github.com/leandrofuccia/blog-app). Faça o download em uma pasta local.
 
-#### **4. Iniciando os Contêineres**
+#### **4. Criando a rede compartilhada**
+
+Antes de subir os serviços com docker-compose, crie a rede compartilhada:
+
+```bash
+docker network create app-network
+```
+
+#### **5. Iniciando os Contêineres**
 
 1. Na mesma pasta onde se encontra o arquivo `docker-compose.yml`, execute o comando abaixo para iniciar os contêineres:
 
@@ -164,7 +172,7 @@ O arquivo [docker-compose.yml](https://raw.githubusercontent.com/leandrofuccia/b
 > - `blog_app`: Aplicação
 > - `postgres_db`: Banco de dados PostgreSQL
 
-#### **5. Testando a Aplicação**
+#### **6. Testando a Aplicação**
 
 1. Acesse a aplicação no navegador:
 
@@ -177,7 +185,7 @@ O arquivo [docker-compose.yml](https://raw.githubusercontent.com/leandrofuccia/b
    - Criar usuários
    - Criar e gerenciar postagens
 
-#### **6. Encerrando os Contêineres**
+#### **7. Encerrando os Contêineres**
 
 Para parar e remover os contêineres, execute:
 
