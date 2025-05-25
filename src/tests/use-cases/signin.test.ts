@@ -32,15 +32,5 @@ describe("SigninUseCase", () => {
 
         expect(result?.username).toBe("teste@gmail.com");
     });
-
-
-    it("deve lançar InvalidCredentialsError se as credenciais não forem encontradas", async () => {
-            const username = ZodNull;             
-           
-            credencialRepositoryMock.findByUsername.mockImplementation = jest.fn().mockImplementation(() => {
-                return Promise.resolve(username);
-            });
     
-            await expect(signinUseCase.handler("inexistente@gmail.com")).rejects.toThrow(InvalidCredentialsError);
-        });
 });

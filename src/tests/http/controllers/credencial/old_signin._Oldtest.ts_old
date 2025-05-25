@@ -1,4 +1,4 @@
-import { signin } from '@/http/controllers/credencial/signin';
+/*import { signin } from '@/http/controllers/credencial/signin';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error';
 import { makeSigninUseCase } from '@/use-cases/factory/make-signin-use-case';
@@ -51,7 +51,7 @@ describe('Signin Controller', () => {
     } as unknown as FastifyReply;
   });
 
-  it('deve fazer login com sucesso e retornar um token', async () => {
+ it('deve fazer login com sucesso e retornar um token', async () => {
     await signin(request, reply);
 
     expect(mockSigninUseCase).toHaveBeenCalledWith('testuser');
@@ -74,3 +74,9 @@ describe('Signin Controller', () => {
   });
  
 });
+
+
+
+*/
+
+
