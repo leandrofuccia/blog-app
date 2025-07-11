@@ -58,6 +58,8 @@ import { FastifyInstance } from "fastify";
 import { create } from "./create";
 import { signin } from "./signin";
 import { z } from "zod";
+import { update } from "./update";
+import { deleteCredencial } from "./delete";
 
 export async function credencialRoutes(app: FastifyInstance) {
   //Schema para criação de credencial
@@ -115,9 +117,29 @@ export async function credencialRoutes(app: FastifyInstance) {
     },
   };
 
+  const credencialSchemaUpdate = {
+    tags: ['Credencial'],
+    body: z.object({
+      username: z.string(),
+      password: z.string(),      
+    }),
+    response: {
+      200: z.object({
+        id: z.number(),
+        username: z.string(),
+        password: z.string(),
+      }),
+      400: z.object({
+        message: z.string(),
+      }),
+    },
+  };
+
   //Definição das rotas
   app.post("/credencial", { schema: createCredencialSchema }, create);
   app.post("/credencial/signin", { schema: signinSchema }, signin);
+  app.put("/credencial/:id", { schema: credencialSchemaUpdate }, update);
+  app.delete('/credencial/:id', { schema: { tags: ['Credencial'] } }, deleteCredencial);
 
   //Tratamento global de erros para capturar falhas de validação antes do controller
   app.setErrorHandler((error, request, reply) => {

@@ -64,12 +64,19 @@ export class PostagemRepository implements IPostagemRepository{
     }
     
 
-    async findPostagemById(id: number): Promise<IPostagem> {
+    /*async findPostagemById(id: number): Promise<IPostagem> {
         return this.repository.findOne({          
           where: { id },
         }) as Promise<IPostagem>;
-      }
-    
+      }*/
+
+
+    async findPostagemById(id: number): Promise<IPostagem> {
+      return this.repository.findOne({
+        where: { id },
+        relations: ['usuario'], // inclui a entidade relacionada
+      }) as Promise<IPostagem>;
+    }
     
     async findPostagemBySearch(palavrasChave: string, page: number, limit: number): Promise<(IPostagem)[]> {
         const offset = (page - 1) * limit;
@@ -89,10 +96,32 @@ export class PostagemRepository implements IPostagemRepository{
       }
 
 
-    async findPostagem(page: number, limit: number): Promise<(IPostagem)[]> {
+    /*async findPostagem(page: number, limit: number): Promise<(IPostagem)[]> {
         return this.repository.find({
             skip: (page - 1) * limit,
             take: limit,
         })
     }
+    */
+  async findPostagem(page: number, limit: number): Promise<IPostagem[]> {
+    return this.repository.find({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { datacriacao: 'DESC' },
+      relations: ['usuario'], 
+      select: {
+        id: true,
+        titulo: true,
+        conteudo: true,
+        datacriacao: true,
+        dataatualizacao: true,
+        usuario: {
+          id: true,
+          nome: true
+        }
+      }
+    });
+  }  
+
+        
  }

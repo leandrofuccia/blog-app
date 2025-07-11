@@ -13,7 +13,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
         usuarioid: z.coerce.number(),
         
     })
-
+    console.log('Chegou no controller')
     const { username, credencialId } = request.user as { username: string; credencialId: number };
     const findUsuarioByCredencialIdUseCase = makeFindUsuarioByCredencialUseCase()
     const usuario = await findUsuarioByCredencialIdUseCase.handler(credencialId)
@@ -24,6 +24,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
    
     if (usuario[0].perfilid !== 2) {
         throw new unauthorizedPerfilError()
+        
     }
  
     const {titulo, conteudo, usuarioid} = registrerBodySchema.parse(request.body)   

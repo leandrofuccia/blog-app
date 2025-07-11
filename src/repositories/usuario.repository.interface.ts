@@ -15,4 +15,7 @@ export interface IUsuarioRepository{
           page: number, 
           limit: number,
        ): Promise<(IUsuario)[]>
+
+      update (id: number, nome: string, perfilId: number): Promise<IUsuario>
+      delete (id: number): Promise<void>
 }

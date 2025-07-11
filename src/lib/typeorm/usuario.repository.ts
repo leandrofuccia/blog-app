@@ -4,6 +4,7 @@ import { IUsuarioRepository } from "@/repositories/usuario.repository.interface"
 import { Repository } from "typeorm";
 import { appDataSource } from "./typeorm";
 import { ICredencial } from "@/entities/models/credencial.interface";
+import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
 
 export class UsuarioRepository implements IUsuarioRepository{
 
@@ -29,7 +30,7 @@ export class UsuarioRepository implements IUsuarioRepository{
     ): Promise<(IUsuario & ICredencial)[]> {
                              
         const queryBuilder = this.repository.createQueryBuilder("usuario")
-            .leftJoinAndSelect("usuario.credencial", "credencial") // Certifique-se de que o relacionamento está definido corretamente na entidade
+            .leftJoinAndSelect("usuario.credencial", "credencial") 
             .where("usuario.credencialid = :credencialId", { credencialId });
                           
         const usuarios = await queryBuilder.getMany();
@@ -56,5 +57,19 @@ export class UsuarioRepository implements IUsuarioRepository{
     async findUsuario(page: number, limit: number): Promise<IUsuario[]> {
         return await this.repository.find({
         });
-    }    
+    }
+    
+    
+    async update (id: number, nome: string, perfilId: number): Promise<IUsuario>{
+            const usuario = await this.repository.findOne({ where: { id } });
+            if (!usuario) throw new ResourceNotFoundError()
+            usuario.nome = nome;
+            usuario.perfilid = perfilId;
+            return this.repository.save(usuario);
+            
+    }
+
+     async delete (id: number): Promise<void>{
+        await this.repository.delete(id)
+    }
 }
