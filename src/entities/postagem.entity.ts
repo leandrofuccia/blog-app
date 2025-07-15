@@ -1,6 +1,7 @@
 import { IPostagem } from "./models/postagem.interface";
-import { Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./usuario.entity";
+import { Comentario } from "./comentario.entity";
 
 @Entity({
   name: 'postagem',
@@ -50,8 +51,12 @@ export class Postagem implements IPostagem {
   
   usuario: Usuario;  
 
-  postagem?: IPostagem[] | undefined;
+  @OneToMany(() => Comentario, comentario => comentario.postagem)
+  comentarios?: Comentario[];
 
+
+  postagem?: IPostagem[] | undefined;
+  
   constructor(titulo: string, conteudo: string, usuarioid: number) {
     this.titulo = titulo;
     this.conteudo = conteudo;

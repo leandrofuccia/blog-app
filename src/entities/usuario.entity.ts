@@ -3,6 +3,7 @@ import {Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, OneToOne, P
 import { Postagem } from "./postagem.entity"
 import { Credencial } from "./credencial.entity"
 import { Perfil } from "./perfil.entity"
+import { Comentario } from "./comentario.entity"
 
 @Entity({
   name: 'usuario',
@@ -64,6 +65,10 @@ export class Usuario implements IUsuario {
       },
 
     })
+
+    @OneToMany(() => Comentario, comentario => comentario.usuario)
+    comentario?: Comentario[];
+
 
     postagens?: Postagem[];
    

@@ -1,3 +1,4 @@
+import { Comentario } from "@/entities/comentario.entity";
 import { Credencial } from "@/entities/credencial.entity";
 import { Perfil } from "@/entities/perfil.entity";
 import { Usuario } from "@/entities/usuario.entity";
@@ -11,7 +12,7 @@ beforeAll(async () => {
     type: 'sqlite',
     database: ':memory:',
     dropSchema: true,
-    entities: [Credencial, Usuario, Perfil], 
+    entities: [Credencial, Usuario, Perfil, Comentario], 
     synchronize: false,
     logging: false,
   });

@@ -1,3 +1,4 @@
+import { Comentario } from "@/entities/comentario.entity";
 import { Credencial } from "@/entities/credencial.entity";
 import { Perfil } from "@/entities/perfil.entity";
 import { Usuario } from "@/entities/usuario.entity";
