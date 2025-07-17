@@ -2,6 +2,7 @@ import { IPostagem } from "./models/postagem.interface";
 import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./usuario.entity";
 import { Comentario } from "./comentario.entity";
+import { Curtida } from "./curtida.entity";
 
 @Entity({
   name: 'postagem',
@@ -53,6 +54,9 @@ export class Postagem implements IPostagem {
 
   @OneToMany(() => Comentario, comentario => comentario.postagem)
   comentarios?: Comentario[];
+
+  @OneToMany(() => Curtida, (curtida) => curtida.postagem)
+  curtidas: Curtida[];
 
 
   postagem?: IPostagem[] | undefined;

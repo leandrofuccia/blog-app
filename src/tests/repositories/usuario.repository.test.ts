@@ -1,5 +1,7 @@
 import { Comentario } from "@/entities/comentario.entity";
 import { Credencial } from "@/entities/credencial.entity";
+import { Curtida } from "@/entities/curtida.entity";
+import { CurtidaComentario } from "@/entities/curtidaComentario.entity";
 import { Perfil } from "@/entities/perfil.entity";
 import { Postagem } from "@/entities/postagem.entity";
 import { Usuario } from "@/entities/usuario.entity";
@@ -13,7 +15,7 @@ beforeAll(async () => {
     type: 'sqlite',
     database: ':memory:',
     dropSchema: true,
-    entities: [Credencial, Usuario, Perfil, Comentario, Postagem], 
+    entities: [Credencial, Usuario, Perfil, Comentario, Postagem, CurtidaComentario, Curtida], 
     synchronize: false,
     logging: false,
   });
@@ -29,6 +31,8 @@ beforeEach(async () => {
   await queryRunner.query('DROP TABLE IF EXISTS usuario');
   await queryRunner.query('DROP TABLE IF EXISTS perfil');
   await queryRunner.query('DROP TABLE IF EXISTS postagem');
+  await queryRunner.query('DROP TABLE IF EXISTS CurtidaComentario');
+  await queryRunner.query('DROP TABLE IF EXISTS Curtida');
   await queryRunner.query('PRAGMA foreign_keys=ON');
   await appDataSource.synchronize(true);
 });

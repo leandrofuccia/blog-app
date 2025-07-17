@@ -6,6 +6,8 @@ import { appDataSource } from '@/lib/typeorm/typeorm';
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error";
 import { Perfil } from "@/entities/perfil.entity";
 import { Comentario } from "@/entities/comentario.entity";
+import { CurtidaComentario } from "@/entities/curtidaComentario.entity";
+import { Curtida } from "@/entities/curtida.entity";
 
 let postagemRepository: PostagemRepository;
 
@@ -14,7 +16,7 @@ beforeAll(async () => {
     type: 'sqlite',
     database: ':memory:',
     dropSchema: true,
-    entities: [Postagem, Usuario, Credencial, Perfil, Comentario], 
+    entities: [Postagem, Usuario, Credencial, Perfil, Comentario, CurtidaComentario, Curtida], 
     synchronize: false,
     logging: false,
   });
@@ -32,6 +34,8 @@ beforeEach(async () => {
   await queryRunner.query('DROP TABLE IF EXISTS credencial');
   await queryRunner.query('DROP TABLE IF EXISTS perfil');
   await queryRunner.query('DROP TABLE IF EXISTS comentario');
+  await queryRunner.query('DROP TABLE IF EXISTS CurtidaComentario');
+  await queryRunner.query('DROP TABLE IF EXISTS Curtida');
   await queryRunner.query('PRAGMA foreign_keys=ON');
 
   await appDataSource.synchronize(true);

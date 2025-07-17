@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IComentario } from './models/comentario.interface';
 import { Postagem } from './postagem.entity';
 import { Usuario } from './usuario.entity';
+import { CurtidaComentario } from './curtidaComentario.entity';
 
 @Entity({ name: 'comentario' })
 export class Comentario implements IComentario {
@@ -37,6 +38,10 @@ export class Comentario implements IComentario {
   @ManyToOne(() => Usuario, usuario => usuario.comentario, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'usuarioid' })
   usuario?: Usuario;
+
+  @OneToMany(() => CurtidaComentario, curtida => curtida.comentario)
+  curtidas: CurtidaComentario[];
+
 
   constructor(postid: number, usuarioid: number | undefined, nome_autor: string, conteudo: string) {
     this.postid = postid;

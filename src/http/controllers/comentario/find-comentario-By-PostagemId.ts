@@ -26,6 +26,8 @@ export async function findComentarioByPostagemId(
         pageNumber,
         limitNumber
     )
+
+    console.log('findComentarioByPostagemId' , comentario)
     return reply.status(200).send(comentario)
    
 }

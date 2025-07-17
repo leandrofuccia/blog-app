@@ -8,6 +8,8 @@ import dotenv from "dotenv";
 import { Perfil } from "@/entities/perfil.entity";
 import { seedPerfilTableOrm } from "@/lib/typeorm/seedPerfilTableOrm";
 import { Comentario } from "@/entities/comentario.entity";
+import { Curtida } from "@/entities/curtida.entity";
+import { CurtidaComentario } from "@/entities/curtidaComentario.entity";
 
 const envFilePath = process.env.NODE_ENV === "test" ? ".env.test" : ".env";
 const envPath = path.resolve(process.cwd(), envFilePath);
@@ -25,7 +27,7 @@ export const appDataSource = new DataSource({
   username: env.NODE_ENV === "test" ? undefined : env.DATABASE_USER || "blogdb",
   password: env.NODE_ENV === "test" ? undefined : env.DATABASE_PASSWORD || "sua_senha_segura",
   database: env.NODE_ENV === "test" ? ":memory:" : env.DATABASE_NAME || "blogdb",
-  entities: [Perfil, Usuario, Postagem, Credencial, Comentario],
+  entities: [Perfil, Usuario, Postagem, Credencial, Comentario, Curtida, CurtidaComentario],
   logging: env.NODE_ENV === "development",
   synchronize: env.NODE_ENV !== "production",  
 });
