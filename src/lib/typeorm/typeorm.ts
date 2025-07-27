@@ -7,6 +7,7 @@ import path from "path";
 import dotenv from "dotenv";
 import { Perfil } from "@/entities/perfil.entity";
 import { seedPerfilTableOrm } from "@/lib/typeorm/seedPerfilTableOrm";
+import { seedUsuarioAdminDefault } from "@/lib/typeorm/seedUsuarioAdminDefault";
 
 const envFilePath = process.env.NODE_ENV === "test" ? ".env.test" : ".env";
 const envPath = path.resolve(process.cwd(), envFilePath);
@@ -14,7 +15,7 @@ dotenv.config({ path: envPath });
 
 const databaseHost =
   env.NODE_ENV === "test"
-    ? "localhost" 
+    ? "localhost"
     : env.DATABASE_HOST || (process.env.DOCKER_ENV ? "db" : "localhost");
 
 export const appDataSource = new DataSource({
@@ -26,7 +27,7 @@ export const appDataSource = new DataSource({
   database: env.NODE_ENV === "test" ? ":memory:" : env.DATABASE_NAME || "blogdb",
   entities: [Perfil, Usuario, Postagem, Credencial],
   logging: env.NODE_ENV === "development",
-  synchronize: env.NODE_ENV !== "production",  
+  synchronize: env.NODE_ENV !== "production",
 });
 
 export async function initializeDatabase(): Promise<void> {
@@ -42,11 +43,9 @@ export async function initializeDatabase(): Promise<void> {
     await appDataSource.initialize();
     if (env.NODE_ENV !== "test") {
       console.log("Database conectado com sucesso!");
-    }
 
-    if (env.NODE_ENV !== "test") {
-      console.log("Database conectado com sucesso!");
-      await seedPerfilTableOrm(); 
+      await seedPerfilTableOrm();
+      await seedUsuarioAdminDefault();
     }
 
   } catch (error) {
