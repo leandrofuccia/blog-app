@@ -55,6 +55,8 @@ export async function validateJwt(
       /^GET-\/docs\/json$/,
       /^GET-\/docs\/static\/.*$/,
       /^PUT-\/usuario(\/[^\/]+)?$/,
+      /^GET-\/comentario\/postagem(\/[^\/]+)?$/,
+      /^GET-\/comentario\/count(\/[^\/]+)?$/,
     ];
 
     // Ignora query params

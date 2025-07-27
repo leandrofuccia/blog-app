@@ -12,6 +12,9 @@ import { credencialRoutes } from "./http/controllers/credencial/route"
 import fastifySwagger from '@fastify/swagger';
 import {jsonSchemaTransform, serializerCompiler,validatorCompiler} from "fastify-type-provider-zod";
 import fastifySwaggerUi from "@fastify/swagger-ui"
+import { comentarioRoutes } from "./http/controllers/comentario/route"
+import { curtidaRoutes } from "./http/controllers/curtida/route"
+import { curtidaComentarioRoutes } from "./http/controllers/curtidaComentario/route"
 
 export const app = fastify()
 
@@ -64,5 +67,14 @@ app.register(postagemRoutes)
 
 console.log('Registrando rota 2 /credencial') 
 app.register(credencialRoutes)
+
+console.log('Registrando rota 3 /comentario') 
+app.register(comentarioRoutes)
+
+console.log('Registrando rota 4 /curtida') 
+app.register(curtidaRoutes)
+
+console.log('Registrando rota 5 /curtida comentario') 
+app.register(curtidaComentarioRoutes)
 
 app.setErrorHandler(globalErrorHandler)
